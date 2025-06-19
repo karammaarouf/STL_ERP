@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //جدول كسر العلاقة بين الطبلية و الشحنة
-        Schema::create('pallet_shipments', function (Blueprint $table) {
+        Schema::create('assets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pallet_id')->constrained('pallets')->onDelete('cascade');
-            $table->foreignId('shipment_id')->constrained('shipments')->onDelete('cascade');
+            $table->string('asset_name', 100);
+            $table->string('asset_code', 50)->unique();
+            $table->text('description')->nullable();
+            $table->integer('quantity');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pallet_shipments');
+        Schema::dropIfExists('assets');
     }
 };

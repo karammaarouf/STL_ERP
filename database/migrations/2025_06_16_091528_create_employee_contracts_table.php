@@ -11,8 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // جدول عقد الموظف
         Schema::create('employee_contracts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
+            $table->string('contract_number', 50)->unique();
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
+            $table->enum('contract_type', ['full_time', 'part_time', 'temporary', 'intern'])->comment('نوع العقد, كامل وقت, جزئي, مؤقت, متدرب');
+            $table->decimal('basic_salary', 15, 2)->comment('الراتب الأساسي');
+            $table->foreignId('salary_currency_id')->nullable()->constrained('currencies')->onDelete('set null');
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

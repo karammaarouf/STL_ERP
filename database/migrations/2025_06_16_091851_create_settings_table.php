@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // جدول الاعدادات, مثلا لو عايز اضيف اعدادات للموقع,
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
+            $table->string('key', 100)->unique();
+            $table->text('value');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

@@ -11,8 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // جدول طلبات إلغاء خدمة الموظف
         Schema::create('employee_termination_requests', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
+            $table->foreignId('requested_by')->constrained('users')->onDelete('cascade');
+            $table->date('request_date');
+            $table->text('reason')->comment('سبب الالغاء,مثال: غياب,تخطيط سياسة,مشكلة أداء, أخرى');
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending')->comment('حالة الطلب');
+            $table->date('approval_date')->nullable();
+            $table->text('note')->nullable(); 
             $table->timestamps();
         });
     }

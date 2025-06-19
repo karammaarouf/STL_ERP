@@ -11,8 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // جدول الميزانية
         Schema::create('budgets', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 100);
+            $table->text('description')->nullable();
+            $table->decimal('allocated_amount', 18, 2)->comment('المبلغ المخصص');
+            $table->foreignId('currency_id')->nullable()->constrained('currencies')->onDelete('set null');
+            $table->date('start_date');
+            $table->date('end_date'); 
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
         });
     }

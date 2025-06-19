@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        //جدول لعناصر الشحنة
         Schema::create('shipment_group_items', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('shipment_group_id')->constrained('shipment_groups')->onDelete('cascade');
+            $table->foreignId('shipment_id')->constrained('shipments')->onDelete('cascade');
             $table->timestamps();
         });
     }

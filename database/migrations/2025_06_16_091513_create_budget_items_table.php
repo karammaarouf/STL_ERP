@@ -11,8 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // جدول عناصر الميزانية , مثل حسابات الميزانية , المنتجات, الخدمات, والموردين
+        // وحتى المبيعات والاستيراد
         Schema::create('budget_items', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('budget_id')->constrained('budgets')->onDelete('cascade');
+            $table->foreignId('account_id')->constrained('financial_accounts')->onDelete('cascade');
+            $table->decimal('allocated_amount', 18, 2);
+            $table->foreignId('currency_id')->nullable()->constrained('currencies')->onDelete('set null');
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

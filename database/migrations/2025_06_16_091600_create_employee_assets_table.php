@@ -11,8 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
+        //جدول المواد المضافة للموظف(العهد التي يستلمها الموظف)
         Schema::create('employee_assets', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
+            $table->integer('quantity');
+            $table->date('assigned_date'); 
+            $table->date('returned_date')->nullable();
+            $table->enum('status', ['in_use', 'returned', 'lost', 'repair'])->comment('حالة المواد, في الاستخدام, تم إرجاعها, فقدتها, بحاجة للتعليق');
+            $table->text('note')->nullable(); 
             $table->timestamps();
         });
     }
