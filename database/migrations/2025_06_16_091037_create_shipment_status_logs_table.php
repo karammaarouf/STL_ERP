@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('shipment_id')->constrained('shipments')->onDelete('cascade');
             $table->enum('old_status', ['pending','on_hold', 'in_transit','out_for_delivery', 'delivered', 'cancelled', 'returned'])->default('pending')->comment("pending: قيد الانتظار, in_transit: قيد الشحن, delivered: تم التوصيل, cancelled: ملغية, returned: مرتجعة, on_hold: معلقة, out_for_delivery: خرجت للتوصيل");
             $table->enum('new_status', ['pending','on_hold', 'in_transit','out_for_delivery', 'delivered', 'cancelled', 'returned'])->default('pending')->comment("pending: قيد الانتظار, in_transit: قيد الشحن, delivered: تم التوصيل, cancelled: ملغية, returned: مرتجعة, on_hold: معلقة, out_for_delivery: خرجت للتوصيل");
-            $table->foreignId('changed_by_user_id')->constrained('users')->onDelete('set null');
+            $table->foreignId('changed_by')->nullable()->constrained('users')->onDelete('set null');
             $table->dateTime('changed_at')->useCurrent();
             $table->foreignId('warehouse_id')->nullable()->constrained('warehouses')->onDelete('set null');
             $table->text('note')->nullable();

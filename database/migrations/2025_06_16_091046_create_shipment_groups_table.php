@@ -22,8 +22,7 @@ return new class extends Migration
             $table->string('driver_name', 100);
             $table->string('vehicle_plate', 20);
             $table->enum('status', ['pending', 'dispatched', 'delivered', 'cancelled'])->default('pending');
-            $table->foreignId('created_by_user_id')->constrained('users')->onDelete('cascade');
-            $table->dateTime('created_at')->useCurrent();
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
         });
     }

@@ -23,9 +23,9 @@ return new class extends Migration
             $table->decimal('weight', 10, 2);
             $table->decimal('volume', 10, 2);
             $table->decimal('declared_value', 15, 2)->comment("قيمة الشحنة المعلنة نقدياً");
-            $table->foreignId('currency_id')->constrained('currencies')->onDelete('set null');
+            $table->foreignId('currency_id')->nullable()->constrained('currencies')->onDelete('set null');
             $table->decimal('shipping_cost_amount', 15, 2)->comment("تكلفة الشحن");
-            $table->foreignId('shipping_cost_currency_id')->constrained('currencies')->onDelete('cascade')->comment('عملة تكلفة الشحن');
+            $table->foreignId('shipping_cost_currency_id')->nullable()->constrained('currencies')->onDelete('set null')->comment('عملة تكلفة الشحن');
             $table->enum('shipping_cost_paid_by', ['sender', 'receiver'])->comment("الجهة التي تتحمل تكلفة الشحن");
             $table->timestamps();
         });
