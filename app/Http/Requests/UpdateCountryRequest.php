@@ -11,7 +11,8 @@ class UpdateCountryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        // تأكد من أن المستخدم لديه الصلاحية اللازمة
+        return $this->user()->can('edit-country');
     }
 
     /**
@@ -19,19 +20,18 @@ class UpdateCountryRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules()
+    public function rules(): array
     {
+        // الحصول على id الدولة من المسار (route)
+        $countryId = $this->route('country')->id;
+
         return [
-            'name' => 'required|string|max:255|unique:countries,name,' . $this->country->id,
-            'iso_code' => 'required|string|max:10|unique:countries,code,' . $this->country->id,
+            'name' => 'required|string|max:100|unique:countries,name,' . $countryId,
+            // تعديل هنا
+            'iso_code' => 'required|string|max:3|unique:countries,iso_code,' . $countryId,
         ];
     }
 
-    /**
-     * Get custom messages for validator errors.
-     *
-     * @return array<string, string>
-     */
     public function messages(): array
     {
         return [
@@ -42,3 +42,4 @@ class UpdateCountryRequest extends FormRequest
         ];
     }
 }
+

@@ -59,6 +59,7 @@ class CountrySeeder extends Seeder
             'create-country',
             'edit-country',
             'delete-country',
+            'show-country',
         ];
 
         // إنشاء الصلاحيات
