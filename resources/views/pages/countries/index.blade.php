@@ -1,6 +1,6 @@
 @extends('../layouts.app')
 
-@section('title', 'الدول')
+@section('title', __('Countries'))
 
 @section('content')
     <div class="container-fluid">
@@ -8,9 +8,9 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <h5>قائمة الدول</h5>
+                        <h5>{{ __('Countries List') }}</h5>
                         @can('create-country')
-                            <a href="{{ route('countries.create') }}" class="btn btn-primary">إضافة دولة جديدة</a>
+                            <a href="{{ route('countries.create') }}" class="btn btn-primary">{{ __('Add New Country') }}</a>
                         @endcan
                     </div>
                     <div class="table-responsive">
@@ -18,15 +18,16 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">اسم الدولة</th>
-                                    <th scope="col">رمز الدولة</th>
+                                    <th scope="col">{{ __('Country Name') }}</th>
+                                    <th scope="col">{{ __('Country Code') }}</th>
                                     @canany(['edit-country', 'delete-country'])
-                                    <th scope="col">خيارات</th>
+                                    <th scope="col">{{ __('Options') }}</th>
                                     @endcanany
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($countries as $country)
+                                    <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
                                         <td> <i class="flag-icon flag-icon-{{ strtolower($country->iso_code) }}"></i>  {{ $country->name }} </td>
                                         <td>{{ $country->iso_code }}</td>
@@ -39,12 +40,12 @@
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $country->id }}">
                                                     @can('edit-country')
                                                     <li>
-                                                        <a class="dropdown-item" href="{{ route('countries.edit', $country->id) }}">تعديل</a>
+                                                        <a class="dropdown-item" href="{{ route('countries.edit', $country->id) }}">{{ __('Edit') }}</a>
                                                     </li>
                                                     @endcan
                                                     @can('show-country')
                                                     <li>
-                                                        <a class="dropdown-item" href="{{ route('countries.show', $country->id) }}">تفاصيل الدولة</a>
+                                                        <a class="dropdown-item" href="{{ route('countries.show', $country->id) }}">{{ __('Country Details') }}</a>
                                                     </li>
                                                     @endcan
                                                     @can('delete-country')

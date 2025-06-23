@@ -51,16 +51,16 @@
             <div class="login-card">
               <form class="theme-form login-form" method="post" action="{{ route('login') }}">
                 @csrf
-                <h4>Login</h4>
-                <h6>Welcome back! Log in to your account.</h6>
+                <h4>{{ __('Login') }}</h4>
+                <h6>{{ __('Welcome back! Log in to your account.') }}</h6>
                 <div class="form-group">
-                  <label>Email Address</label>
+                  <label>{{ __('Email Address') }}</label>
                   <div class="input-group"><span class="input-group-text"><i class="icon-email"></i></span>
                     <input class="form-control" type="email" name="email" required="" placeholder="Test@gmail.com" value="{{ old('email') }}">
                   </div>
                 </div>
                 <div class="form-group">
-                  <label>Password</label>
+                  <label>{{ __('Password') }}</label>
                   <div class="input-group"><span class="input-group-text"><i class="icon-lock"></i></span>
                     <input class="form-control" type="password" name="password" required="" placeholder="*********">
                     <div class="show-hide"><span class="show">                         </span></div>
@@ -69,11 +69,11 @@
                 <div class="form-group">
                   <div class="checkbox">
                     <input id="checkbox1" type="checkbox">
-                    <label for="checkbox1">Remember password</label>
-                  </div><a class="link" href="">Forgot password?</a>
+                    <label for="checkbox1">{{ __('Remember password') }}</label>
+                  </div><a class="link" href="">{{ __('Forgot password?') }}</a>
                 </div>
                 <div class="form-group">
-                  <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+                  <button class="btn btn-primary btn-block" type="submit">{{ __('Sign in') }}</button>
                 </div>
               </form>
             </div>

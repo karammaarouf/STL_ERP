@@ -33,10 +33,10 @@ class StoreCountryRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'اسم الدلة مطلوب .',
-            'name.unique' => '  اسم الدلة يجب أن يكون فريدًا.',
-            'iso_code.required' => 'رمز الدلة مطلوب   .',
-            'iso_code.unique' => 'رمز الدلة يجب أن يكون فريدًا.',
+            'name.required' => 'اسم الدولة مطلوب .',
+            'name.unique' => '  اسم الدولة يجب أن يكون فريدًا.',
+            'iso_code.required' => 'رمز الدولة مطلوب   .',
+            'iso_code.unique' => 'رمز الدولة يجب أن يكون فريدًا.',
         ];
     }
 }

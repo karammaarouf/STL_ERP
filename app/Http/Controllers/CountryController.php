@@ -38,7 +38,7 @@ class CountryController extends Controller
     public function store(StoreCountryRequest $request)
     {
         $this->countryService->createCountry($request->validated());
-        return redirect()->route('countries.index')->with('success', 'Country created successfully.');
+        return redirect()->route('countries.index')->with('success', __('Country created successfully.'));
     }
 
     public function show(Country $country)
@@ -61,7 +61,7 @@ class CountryController extends Controller
     {
 
         $this->countryService->updateCountry($country, $request->validated());
-        return redirect()->route('countries.index')->with('success', 'Country updated successfully.');
+        return redirect()->route('countries.index')->with('success', __('Country updated successfully.'));
     }
 
     public function destroy(Country $country)
@@ -70,6 +70,6 @@ class CountryController extends Controller
             abort(403);
         }
         $this->countryService->deleteCountry($country);
-        return redirect()->route('countries.index')->with('success', 'Country deleted successfully.');
+        return redirect()->route('countries.index')->with('success', __('Country deleted successfully.'));
     }
 }

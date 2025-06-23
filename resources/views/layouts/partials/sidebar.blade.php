@@ -2,19 +2,19 @@
     <div class="sidebar-user text-center"><a class="setting-primary" href="javascript:void(0)"><i
                 data-feather="settings"></i></a><img class="img-90 rounded-circle"
             src="{{ asset('assets/images/dashboard/1.png') }}" alt="">
-        <div class="badge-bottom"><span class="badge badge-primary">New</span></div><a href="user-profile.html">
+        <div class="badge-bottom"><span class="badge badge-primary">{{ __('New') }}</span></div><a href="user-profile.html">
             <h6 class="mt-3 f-14 f-w-600">{{ Auth::user()->name }}</h6>
         </a>
-        <p class="mb-0 font-roboto">Human Resources Department</p>
+        <p class="mb-0 font-roboto">{{ __('Human Resources Department') }}</p>
         <ul>
             <li><span><span class="counter">19.8</span>k</span>
-                <p>Follow</p>
+                <p>{{ __('Follow') }}</p>
             </li>
             <li><span>2 year</span>
-                <p>Experince</p>
+                <p>{{ __('Experience') }}</p>
             </li>
             <li><span><span class="counter">95.2</span>k</span>
-                <p>Follower </p>
+                <p>{{ __('Follower') }} </p>
             </li>
         </ul>
     </div>
@@ -24,25 +24,24 @@
             <div id="mainnav">
                 <ul class="nav-menu custom-scrollbar">
                     <li class="back-btn">
-                        <div class="mobile-back text-end"><span>Back</span><i class="fa fa-angle-right ps-2"
+                        <div class="mobile-back text-end"><span>{{ __('Back') }}</span><i class="fa fa-angle-right ps-2"
                                 aria-hidden="true"></i></div>
                     </li>
                     <li class="sidebar-main-title">
                         <div>
-                            <h6>General </h6>
-
+                            <h6>{{ __('General') }}</h6>
                         </div>
                     </li>
                     <li class="dropdown"><a class="nav-link menu-title" href="javascript:void(0)"><i
-                                data-feather="home"></i><span>Dashboard</span></a>
+                                data-feather="home"></i><span>{{ __('Dashboard') }}</span></a>
                         <ul class="nav-submenu menu-content">
-                            <li><a href="index.html">Default</a></li>
-                            <li><a href="dashboard-02.html">Ecommerce</a></li>
+                            <li><a href="index.html">{{ __('Default') }}</a></li>
+                            <li><a href="dashboard-02.html">{{ __('Ecommerce') }}</a></li>
                         </ul>
                     </li>
                     <li ><a class="nav-link title" href="{{route('countries.index')}}"> <i
                                 data-feather="globe"></i>
-                            <span>الدول </span></a>
+                            <span>{{ __('Countries') }}</span></a>
                         <ul class="nav-submenu menu-content">
                         </ul>
                     </li>
