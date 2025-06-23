@@ -8,7 +8,7 @@ use Database\Seeders\UserSeeder;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Run the database seeders.
+     * Seed the application's database.
      *
      * @return void
      */
