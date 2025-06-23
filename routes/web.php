@@ -15,7 +15,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', function () {
         return view('layouts.app');
     })->name('dashboard');
-
     Route::resource('countries', CountryController::class);
 });
 
@@ -24,4 +23,3 @@ require __DIR__ . '/auth.php';
 
 
 // ... other routes
-Route::resource('countries', CountryController::class);

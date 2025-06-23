@@ -46,7 +46,6 @@ class CountrySeeder extends Seeder
             Country::updateOrCreate(['iso_code' => $country['code']], ['name' => $country['name']]);
         }
 
-        $this->command->info('تمت إضافة الدول العربية بنجاح.');
 
         // ------------------ إنشاء الصلاحيات ------------------
 
@@ -67,7 +66,6 @@ class CountrySeeder extends Seeder
             Permission::firstOrCreate(['name' => $permission]);
         }
 
-        $this->command->info('تم إنشاء صلاحيات الدول بنجاح.');
 
         // إعطاء الصلاحيات لدور الـ Super Admin
         // تأكد من أن لديك دور بهذا الاسم أو قم بتغييره للاسم الصحيح
@@ -75,9 +73,6 @@ class CountrySeeder extends Seeder
 
         if ($superAdminRole) {
             $superAdminRole->givePermissionTo($permissions);
-            $this->command->info('تم إعطاء صلاحيات الدول لدور Super Admin.');
-        } else {
-            $this->command->warn('لم يتم العثور على دور Super Admin، يرجى إضافته يدوياً.');
         }
     }
 }
