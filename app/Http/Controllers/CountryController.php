@@ -15,20 +15,23 @@ class CountryController extends Controller
     public function __construct(CountryService $countryService)
     {
         $this->countryService = $countryService;
-        // $this->middleware('permission:view-country', ['only' => ['index']]);
-        // $this->middleware('permission:create-country', ['only' => ['create', 'store']]);
-        // $this->middleware('permission:edit-country', ['only' => ['edit', 'update']]);
-        // $this->middleware('permission:delete-country', ['only' => ['destroy']]);
+
     }
 
     public function index()
     {
+        if (!auth()->user()->can('view-country')) {
+            abort(403);
+        }
         $countries = $this->countryService->getAllCountries();
         return view('pages.countries.index', compact('countries'));
     }
 
     public function create()
     {
+        if (!auth()->user()->can('create-country')) {
+            abort(403);
+        }
         return view('pages.countries.partials.create');
     }
 
@@ -40,22 +43,32 @@ class CountryController extends Controller
 
     public function show(Country $country)
     {
-        return view('countries.show', compact('country'));
+        if (!auth()->user()->can('show-country')) {
+            abort(403);
+        }
+        return view('pages.countries.partials.show', compact('country'));
     }
 
     public function edit(Country $country)
     {
-        return view('countries.edit', compact('country'));
+        if (!auth()->user()->can('edit-country')) {
+            abort(403);
+        }
+        return view('pages.countries.partials.edit', compact('country'));
     }
 
     public function update(UpdateCountryRequest $request, Country $country)
     {
+
         $this->countryService->updateCountry($country, $request->validated());
         return redirect()->route('countries.index')->with('success', 'Country updated successfully.');
     }
 
     public function destroy(Country $country)
     {
+        if (!auth()->user()->can('delete-country')) {
+            abort(403);
+        }
         $this->countryService->deleteCountry($country);
         return redirect()->route('countries.index')->with('success', 'Country deleted successfully.');
     }
