@@ -72,6 +72,10 @@
     "Password": "كلمة المرور",
     "Remember password": "تذكر كلمة المرور",
     "Forgot password?": "هل نسيت كلمة المرور؟",
-    "Sign in": "تسجيل الدخول"
+    "Sign in": "تسجيل الدخول",
+    "The country name is required.": "اسم الدولة مطلوب.",
+    "The country name must be unique.": "اسم الدولة يجب أن يكون فريدًا.",
+    "The country code is required.": "رمز الدولة مطلوب.",
+    "The country code must be unique.": "رمز الدولة يجب أن يكون فريدًا."
 
 }
