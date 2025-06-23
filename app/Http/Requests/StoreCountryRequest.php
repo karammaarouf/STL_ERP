@@ -11,7 +11,8 @@ class StoreCountryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        // تأكد من أن المستخدم لديه الصلاحية اللازمة
+        return $this->user()->can('create-country');
     }
 
     /**
@@ -19,15 +20,17 @@ class StoreCountryRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|unique:countries,name',
-            'iso_code' => 'required|string|max:10|unique:countries,code',
+            'name' => 'required|string|max:100|unique:countries,name',
+            //  تعديل هنا
+            'iso_code' => 'required|string|max:3|unique:countries,iso_code',
         ];
     }
 
-        public function messages(): array
+
+    public function messages(): array
     {
         return [
             'name.required' => 'اسم الدلة مطلوب .',
@@ -36,5 +39,4 @@ class StoreCountryRequest extends FormRequest
             'iso_code.unique' => 'رمز الدلة يجب أن يكون فريدًا.',
         ];
     }
-
 }
