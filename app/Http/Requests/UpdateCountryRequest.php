@@ -11,7 +11,7 @@ class UpdateCountryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -19,10 +19,26 @@ class UpdateCountryRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            //
+            'name' => 'required|string|max:255|unique:countries,name,' . $this->country->id,
+            'iso_code' => 'required|string|max:10|unique:countries,code,' . $this->country->id,
+        ];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'اسم الدلة مطلوب .',
+            'name.unique' => '  اسم الدلة يجب أن يكون فريدًا.',
+            'iso_code.required' => 'رمز الدلة مطلوب   .',
+            'iso_code.unique' => 'رمز الدلة يجب أن يكون فريدًا.',
         ];
     }
 }

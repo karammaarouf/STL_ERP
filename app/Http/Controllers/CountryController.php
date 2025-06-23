@@ -2,65 +2,61 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Country;
 use App\Http\Requests\StoreCountryRequest;
 use App\Http\Requests\UpdateCountryRequest;
+use App\Models\Country;
+use App\Services\CountryService;
+use Illuminate\Http\Request;
 
 class CountryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $countryService;
+
+    public function __construct(CountryService $countryService)
+    {
+        $this->countryService = $countryService;
+        // $this->middleware('permission:view-country', ['only' => ['index']]);
+        // $this->middleware('permission:create-country', ['only' => ['create', 'store']]);
+        // $this->middleware('permission:edit-country', ['only' => ['edit', 'update']]);
+        // $this->middleware('permission:delete-country', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
-        //
+        $countries = $this->countryService->getAllCountries();
+        return view('pages.countries.index', compact('countries'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('pages.countries.partials.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreCountryRequest $request)
     {
-        //
+        $this->countryService->createCountry($request->validated());
+        return redirect()->route('countries.index')->with('success', 'Country created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Country $country)
     {
-        //
+        return view('countries.show', compact('country'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Country $country)
     {
-        //
+        return view('countries.edit', compact('country'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateCountryRequest $request, Country $country)
     {
-        //
+        $this->countryService->updateCountry($country, $request->validated());
+        return redirect()->route('countries.index')->with('success', 'Country updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Country $country)
     {
-        //
+        $this->countryService->deleteCountry($country);
+        return redirect()->route('countries.index')->with('success', 'Country deleted successfully.');
     }
 }
