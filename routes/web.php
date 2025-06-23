@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CountryController;
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', function () {
@@ -16,3 +17,10 @@ Route::middleware(['auth'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+
+    // ... other routes
+    Route::resource('countries', CountryController::class);
+
+

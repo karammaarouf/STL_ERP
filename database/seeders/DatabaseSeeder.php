@@ -6,9 +6,8 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
+    
+
      * @return void
      */
     public function run()
@@ -16,6 +15,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UserSeeder::class,
+             CountrySeeder::class,
+
         ]);
     }
 }
