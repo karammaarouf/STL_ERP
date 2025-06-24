@@ -262,20 +262,22 @@ $('.bg-img-cover').each(function () {
 passward show hide
 ----------------------------------------*/
 $('.show-hide').show();
-$('.show-hide span').addClass('show');
+$('.show-hide span').removeClass('show'); // إزالة class show في البداية
 
 $('.show-hide span').click(function () {
 if ($(this).hasClass('show')) {
-    $('input[name="login[password]"]').attr('type', 'text');
-    $(this).removeClass('show');
+    // إذا كان النص "hide" (class show موجود)، اخفي كلمة المرور
+    $('input[name="password"]').attr('type', 'password');
+    $(this).removeClass('show'); // سيظهر "show"
 } else {
-    $('input[name="login[password]"]').attr('type', 'password');
-    $(this).addClass('show');
+    // إذا كان النص "show" (class show غير موجود)، اظهر كلمة المرور
+    $('input[name="password"]').attr('type', 'text');
+    $(this).addClass('show'); // سيظهر "hide"
 }
 });
 $('form button[type="submit"]').on('click', function () {
-$('.show-hide span').addClass('show');
-$('.show-hide').parent().find('input[name="login[password]"]').attr('type', 'password');
+$('.show-hide span').removeClass('show'); // إعادة تعيين إلى "show"
+$('.show-hide').parent().find('input[name="password"]').attr('type', 'password');
 });
 
 

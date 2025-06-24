@@ -31003,6 +31003,22 @@ span.twitter-typeahead .tt-suggestion {
   text-shadow: 0 1px 0 #fff;
   opacity: .5;
 }
+.show-hide {
+  position: absolute;
+  top: 18px;
+  right: 30px;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  text-transform: capitalize;
+  z-index: 2; }
+  .show-hide span {
+    cursor: pointer;
+    font-size: 13px;
+    color: #24695c; }
+    .show-hide span:before {
+      content: "show"; }
+    .show-hide span.show:before {
+      content: "hidde"; }
 /**=====================
     60. RTL CSS Ends
 ==========================**/

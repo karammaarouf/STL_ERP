@@ -21,7 +21,6 @@
             @include('layouts.partials.sidebar')
             <!-- Page Sidebar Ends-->
             <div class="page-body">
-                @include('layouts.partials.container_header')
                 <!-- Container-fluid starts-->
                 <div class="container-fluid">
                     <div class="row">
