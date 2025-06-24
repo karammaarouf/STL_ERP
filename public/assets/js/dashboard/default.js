@@ -369,305 +369,343 @@ var options = {
   
   colors: [vihoAdminConfig.primary],
 };
-var charttimeline = new ApexCharts(document.querySelector("#chart-timeline-dashbord"), options);
-charttimeline.render();
-// second chart dashbord dafault
-var options17 = {
-  series: [76, 67, 61, 90],
-  chart: {
-      height: 380,
-      type: 'radialBar',
-  },
-  plotOptions: {
-      radialBar: {
-          offsetY: 0,
-          startAngle: 0,
-          endAngle: 270,
-          hollow: {
-              margin: 5,
-              size: '30%',
-              background: 'transparent',
-              image: undefined,
-          },
-          dataLabels: {
-              name: {
-                  show: false,
-              },
-              value: {
-                  show: false,
-              }
-          }
+// Wrap chart initialization in DOM ready handler
+$(document).ready(function() {
+    var charttimeline = new ApexCharts(document.querySelector("#chart-timeline-dashbord"), options);
+    charttimeline.render();
+    
+    // second chart dashbord dafault
+    var options17 = {
+        series: [76, 67, 61, 90],
+        chart: {
+            height: 380,
+            type: 'radialBar',
+        },
+        plotOptions: {
+            radialBar: {
+                offsetY: 0,
+                startAngle: 0,
+                endAngle: 270,
+                hollow: {
+                    margin: 5,
+                    size: '30%',
+                    background: 'transparent',
+                    image: undefined,
+                },
+                dataLabels: {
+                    name: {
+                        show: false,
+                    },
+                    value: {
+                        show: false,
+                    }
+                }
+            }
+        },
+        colors: [vihoAdminConfig.primary, vihoAdminConfig.secondary, vihoAdminConfig.primary, vihoAdminConfig.secondary],
+        labels: ['Total order', 'Total product', 'Quantity', 'Page views'],
+        legend: {
+            show: true,
+            floating: true,
+            fontSize: '14px',
+            position: 'left',
+            fontFamily: 'Roboto',
+            fontweight: 400,
+            // offsetX:30,
+            offsetY: 20,
+            labels: {
+                useSeriesColors: true,
+            },
+            markers: {
+                size: 0,
+                show: false,
+            },
+            formatter: function(seriesName, opts) {
+                return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex]
+            },
+            itemMargin: {
+                vertical: 5,
+                horizontal: 2
+            }
+        },
+        stroke: {
+            lineCap: 'round'
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                legend: {
+                    show: true,
+                    fontSize: '10px',
+                }
+            }
+        }]
+    };
+    var chart17 = new ApexCharts(document.querySelector("#chart-dashbord"), options17);
+    chart17.render();
+    // chart-4 dashbord
+    var options21 = {
+        series: [{
+            name: 'series1',
+            data: [90, 78, 90, 84, 94, 60, 95, 88, 95]
+        }],
+        chart: {
+            height: 405,
+            type: 'area',
+            toolbar: {
+                show: false
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        xaxis: {
+            type: 'datetime',
+            enabled: false,
+            categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+        },
+        yaxis: {
+            show: false,
+        },
+        xaxis: {
+            show: false,
+            labels: {
+                show: false,
+            },
+            axisTicks: {
+                show: false,
+            },
+        },
+        tooltip: {
+            x: {
+                format: 'dd/MM/yy HH:mm',
+                enabled: false,
+            },
+        },
+        colors: [vihoAdminConfig.secondary],
+        responsive: [
+          {
+            breakpoint:1365,
+            options: {
+                chart: {
+                    height: 220
+                }
+            }
+        },
+          {
+            breakpoint: 575,
+            options: {
+                chart: {
+                    height: 180
+                }
+            }
+        },
+         {
+            breakpoint: 992,
+            options: {
+                chart: {
+                    height: 250
+                }
+            }
+        },
+    ]}
+    });
+
+    var options21 = {
+      series: [{
+          name: 'Sample Data',
+          data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+      }],
+      chart: {
+        height: 350,
+        type: 'line',
+        zoom: {
+          enabled: false
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: 'straight'
+      },
+      title: {
+        text: 'Sample Chart',
+        align: 'left'
+      },
+      grid: {
+        row: {
+          colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+          opacity: 0.5
+        },
+      },
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
       }
-  },
-  colors: [vihoAdminConfig.primary, vihoAdminConfig.secondary, vihoAdminConfig.primary, vihoAdminConfig.secondary],
-  labels: ['Total order', 'Total product', 'Quantity', 'Page views'],
-  legend: {
-      show: true,
-      floating: true,
-      fontSize: '14px',
-      position: 'left',
-      fontFamily: 'Roboto',
-      fontweight: 400,
-      // offsetX:30,
-      offsetY: 20,
-      labels: {
-          useSeriesColors: true,
-      },
-      markers: {
-          size: 0,
-          show: false,
-      },
-      formatter: function(seriesName, opts) {
-          return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex]
-      },
-      itemMargin: {
-          vertical: 5,
-          horizontal: 2
-      }
-  },
-  stroke: {
-      lineCap: 'round'
-  },
-  responsive: [{
-      breakpoint: 480,
-      options: {
-          legend: {
-              show: true,
-              fontSize: '10px',
-          }
-      }
-  }]
-};
-var chart17 = new ApexCharts(document.querySelector("#chart-dashbord"), options17);
-chart17.render();
-// chart-4 dashbord
-var options21 = {
-  series: [{
-      name: 'series1',
-      data: [90, 78, 90, 84, 94, 60, 95, 88, 95]
-  }],
-  chart: {
-      height: 405,
-      type: 'area',
-      toolbar: {
-          show: false
-      }
-  },
-  dataLabels: {
-      enabled: false
-  },
-  stroke: {
-      curve: 'smooth'
-  },
-  xaxis: {
-      type: 'datetime',
-      enabled: false,
-      categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-  },
-  yaxis: {
-      show: false,
-  },
-  xaxis: {
-      show: false,
-      labels: {
-          show: false,
-      },
-      axisTicks: {
-          show: false,
-      },
-  },
-  tooltip: {
-      x: {
-          format: 'dd/MM/yy HH:mm',
-          enabled: false,
-      },
-  },
-  colors: [vihoAdminConfig.secondary],
-  responsive: [
-    {
-      breakpoint:1365,
-      options: {
-          chart: {
-              height: 220
-          }
-      },
-  },
-    {
-      breakpoint: 575,
-      options: {
-          chart: {
-              height: 180
-          }
-      },
-  },
-   {
-      breakpoint: 992,
-      options: {
-          chart: {
-              height: 250
-          }
-      },
-  }],
-};
-var chart21 = new ApexCharts(document.querySelector("#chart-3dash"), options21);
-chart21.render();
-//column chart
-var options54 = {
-  series: [{
-      data: [400, 230, 448, 370, 540, 580, 690, 1100, 1200]
-  }],
-  chart: {
-      type: "bar",
-      height: 200,
-      toolbar: {
-          show: false,
-      },
-  },
-  plotOptions: {
-      bar: {
-          horizontal: false,
-          distributed: true,
-          columnWidth: '30%',
-          startingShape: "rounded",
-          endingShape: "rounded",
-          colors: {
-              backgroundBarColors: ["#e5edef"],
-              backgroundBarOpacity: 1,
-              backgroundBarRadius: 9
-          }
-      }
-  },
-  dataLabels: {
-      enabled: false
-  },
-  grid: {
-      yaxis: {
-          lines: {
-              show: false
-          },
-      }
-  },
-  yaxis: {
-      labels: {
-          formatter: function(val) {
-              return val / 100 + "K";
-          },
-      },
-      labels: {
-          show: false,
-      },
-  },
-  xaxis: {
-      axisBorder: {
-          show: false
-      },
-      categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Sep", "Oct"],
-      labels: {
-          show: true,
-      },
-      axisTicks: {
-          show: false,
-      },
-  },
-  colors: [
-      vihoAdminConfig.primary,
-      vihoAdminConfig.primary,
-      vihoAdminConfig.primary,
-      vihoAdminConfig.primary,
-      vihoAdminConfig.primary,
-      vihoAdminConfig.primary,
-      vihoAdminConfig.primary,
-      vihoAdminConfig.primary,
-      vihoAdminConfig.primary
-  ],
-  legend: {
-      show: false
-  }
-};
-var chart54 = new ApexCharts(document.querySelector("#chart-unique-2"), options54);
-chart54.render();
-//new column charts
-var options55 = {
-  series: [{
-      name: "Yearly Profit",
-      data: [{
-          x: "Jan",
-          y: 1500
-      }, {
-          x: "Feb",
-          y: 3000
-      }, {
-          x: "Mar",
-          y: 1800
-      }, {
-          x: "Apr",
-          y: 3000,
-          fillColor: vihoAdminConfig.secondary,
-      }, {
-          x: "May",
-          y: 1800
-      }, {
-          x: "Jun",
-          y: 1500
-      }, {
-          x: "Jul",
-          y: 2500
-      }, {
-          x: "Sep",
-          y: 1500,
-          fillColor: vihoAdminConfig.secondary,
-      }, {
-          x: "Oct",
-          y: 2000
-      }]
-  }],
-  chart: {
-      height: 250,
-      type: "bar",
-      toolbar: {
-          show: false,
-      },
-  },
-  plotOptions: {
-      bar: {
-          horizontal: false,
-          columnWidth: "30%",
-          startingShape: "rounded",
-          endingShape: "rounded",
-          colors: {
-              backgroundBarColors: ["#e5edef"],
-              backgroundBarOpacity: 1,
-              backgroundBarRadius: 9
-          }
-      },
-  },
-  stroke: {
-      show: false,
-  },
-  dataLabels: {
-      enabled: false
-  },
-  fill: {
-      opacity: 1
-  },
-  xaxis: {
-      // type: "datetime",
-      axisBorder: {
-          show: false
-      },
-      labels: {
-          show: true,
-      },
-      axisTicks: {
-          show: false,
-      },
-  },
-  yaxis: {
-      labels: {
-          show: false,
-      }
-  },
-  colors: [vihoAdminConfig.primary]
-};
-var chart55 = new ApexCharts(document.querySelector("#user-activation-dash-2"), options55);
-chart55.render();
+    };
+
+    var chart21 = new ApexCharts(document.querySelector("#chart-3dash"), options21);
+    chart21.render();
+    //column chart
+    var options54 = {
+        series: [{
+            data: [400, 230, 448, 370, 540, 580, 690, 1100, 1200]
+        }],
+        chart: {
+            type: "bar",
+            height: 200,
+            toolbar: {
+                show: false,
+            },
+        },
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                distributed: true,
+                columnWidth: '30%',
+                startingShape: "rounded",
+                endingShape: "rounded",
+                colors: {
+                    backgroundBarColors: ["#e5edef"],
+                    backgroundBarOpacity: 1,
+                    backgroundBarRadius: 9
+                }
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        grid: {
+            yaxis: {
+                lines: {
+                    show: false
+                },
+            }
+        },
+        yaxis: {
+            labels: {
+                formatter: function(val) {
+                    return val / 100 + "K";
+                },
+            },
+            labels: {
+                show: false,
+            },
+        },
+        xaxis: {
+            axisBorder: {
+                show: false
+            },
+            categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Sep", "Oct"],
+            labels: {
+                show: true,
+            },
+            axisTicks: {
+                show: false,
+            },
+        },
+        colors: [
+            vihoAdminConfig.primary,
+            vihoAdminConfig.primary,
+            vihoAdminConfig.primary,
+            vihoAdminConfig.primary,
+            vihoAdminConfig.primary,
+            vihoAdminConfig.primary,
+            vihoAdminConfig.primary,
+            vihoAdminConfig.primary,
+            vihoAdminConfig.primary
+        ],
+        legend: {
+            show: false
+        }
+    };
+    var chart54 = new ApexCharts(document.querySelector("#chart-unique-2"), options54);
+    chart54.render();
+    //new column charts
+    var options55 = {
+        series: [{
+            name: "Yearly Profit",
+            data: [{
+                x: "Jan",
+                y: 1500
+            }, {
+                x: "Feb",
+                y: 3000
+            }, {
+                x: "Mar",
+                y: 1800
+            }, {
+                x: "Apr",
+                y: 3000,
+                fillColor: vihoAdminConfig.secondary,
+            }, {
+                x: "May",
+                y: 1800
+            }, {
+                x: "Jun",
+                y: 1500
+            }, {
+                x: "Jul",
+                y: 2500
+            }, {
+                x: "Sep",
+                y: 1500,
+                fillColor: vihoAdminConfig.secondary,
+            }, {
+                x: "Oct",
+                y: 2000
+            }]
+        }],
+        chart: {
+            height: 250,
+            type: "bar",
+            toolbar: {
+                show: false,
+            },
+        },
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                columnWidth: "30%",
+                startingShape: "rounded",
+                endingShape: "rounded",
+                colors: {
+                    backgroundBarColors: ["#e5edef"],
+                    backgroundBarOpacity: 1,
+                    backgroundBarRadius: 9
+                }
+            },
+        },
+        stroke: {
+            show: false,
+        },
+        dataLabels: {
+            enabled: false
+        },
+        fill: {
+            opacity: 1
+        },
+        xaxis: {
+            // type: "datetime",
+            axisBorder: {
+                show: false
+            },
+            labels: {
+                show: true,
+            },
+            axisTicks: {
+                show: false,
+            },
+        },
+        yaxis: {
+            labels: {
+                show: false,
+            }
+        },
+        colors: [vihoAdminConfig.primary]
+    };
+    var chart55 = new ApexCharts(document.querySelector("#user-activation-dash-2"), options55);
+    chart55.render();

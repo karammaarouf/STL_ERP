@@ -1,4 +1,6 @@
 <script src="{{ asset('assets/js/jquery-3.5.1.min.js') }}"></script>
+<!-- Bootstrap bundle js-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- feather icon js-->
 <script src="{{ asset('assets/js/icons/feather-icon/feather.min.js') }}"></script>
 <script src="{{ asset('assets/js/icons/feather-icon/feather-icon.js') }}"></script>
@@ -6,8 +8,9 @@
 <script src="{{ asset('assets/js/sidebar-menu.js') }}"></script>
 <script src="{{ asset('assets/js/config.js') }}"></script>
 <!-- Bootstrap js-->
-<script src="{{ asset('assets/js/bootstrap/popper.min.js') }}"></script>
-<script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
+<!-- Remove these duplicate Bootstrap inclusions -->
+<!-- <script src="{{ asset('assets/js/bootstrap/popper.min.js') }}"></script> -->
+<!-- <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script> -->
 <!-- Plugins JS start-->
 <script src="{{ asset('assets/js/chart/chartist/chartist.js') }}"></script>
 <script src="{{ asset('assets/js/chart/chartist/chartist-plugin-tooltip.js') }}"></script>
@@ -19,10 +22,12 @@
 <script src="{{ asset('assets/js/clipboard/clipboard.min.js') }}"></script>
 <script src="{{ asset('assets/js/custom-card/custom-card.js') }}"></script>
 <script src="{{ asset('assets/js/tooltip-init.js') }}"></script>
+<script src="{{ asset('assets/js/counter/jquery.waypoints.min.js') }}"></script>
 <script src="{{ asset('assets/js/counter/jquery.counterup.min.js') }}"></script>
 <script src="{{ asset('assets/js/counter/counter-custom.js') }}"></script>
 {{-- //هذا الجافا سكريبت هو لعرض الاشعارات المنبثقة --}}
-{{-- <script src="{{ asset('assets/js/notify/bootstrap-notify.min.js') }}"></script> --}}
+<script src="{{ asset('assets/js/notify/bootstrap-notify.min.js') }}"></script>
+<script src="{{ asset('assets/js/notify/index.js') }}"></script>
 <script src="{{ asset('assets/js/vector-map/jquery-jvectormap-2.0.2.min.js') }}"></script>
 <script src="{{ asset('assets/js/vector-map/map/jquery-jvectormap-world-mill-en.js') }}"></script>
 <script src="{{ asset('assets/js/vector-map/map/jquery-jvectormap-us-aea-en.js') }}"></script>
