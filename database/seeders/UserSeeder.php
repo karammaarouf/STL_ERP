@@ -20,12 +20,28 @@ class UserSeeder extends Seeder
         // إعادة تعيين الكاش الخاص بالأدوار والصلاحيات لتجنب المشاكل
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
+        // إنشاء الصلاحيات الخاصة بالمستخدمين
+        $permissions = [
+            'create-user',
+            'edit-user',
+            'delete-user',
+            'show-user'
+        ];
+
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission]);
+        }
+
+
         // إنشاء الأدوار
         // استخدام firstOrCreate لتجنب إنشاء أدوار مكررة عند إعادة تشغيل الـ Seeder
         $superAdminRole = Role::firstOrCreate(['name' => 'super-admin']);
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
 
-        $this->command->info('تم إنشاء دور "super-admin" و "admin" بنجاح.');
+
+        // ربط صلاحيات المستخدمين بدور الأدمن
+        $adminRole->syncPermissions($permissions);
+
 
         // إنشاء المستخدم الأول - Super Admin
         $superAdminUser = User::firstOrCreate(
@@ -39,7 +55,6 @@ class UserSeeder extends Seeder
         // ربط دور Super Admin مع المستخدم
         $superAdminUser->assignRole($superAdminRole);
 
-        $this->command->info('تم إنشاء مستخدم Super Admin وربطه بالدور.');
 
         // إنشاء المستخدم الثاني - Admin
         $adminUser = User::firstOrCreate(
@@ -53,13 +68,10 @@ class UserSeeder extends Seeder
         // ربط دور Admin مع المستخدم
         $adminUser->assignRole($adminRole);
 
-        $this->command->info('تم إنشاء مستخدم Admin وربطه بالدور.');
 
         // إعطاء جميع الصلاحيات الموجودة لدور الـ Super Admin
         // هذا يضمن أن الـ Super Admin لديه كل الصلاحيات دائماً
         $allPermissions = Permission::pluck('id', 'id')->all();
         $superAdminRole->syncPermissions($allPermissions);
-
-        $this->command->info('تم إعطاء جميع الصلاحيات لدور Super Admin.');
     }
 }

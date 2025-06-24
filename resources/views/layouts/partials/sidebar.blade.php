@@ -35,7 +35,7 @@
                     <li class="dropdown"><a class="nav-link menu-title" href="javascript:void(0)"><i
                                 data-feather="home"></i><span>{{ __('Dashboard') }}</span></a>
                         <ul class="nav-submenu menu-content">
-                            <li><a href="index.html">{{ __('Default') }}</a></li>
+                            <li><a href="{{ route('users.index') }}">{{ __('Users') }}</a></li>
                             <li><a href="dashboard-02.html">{{ __('Ecommerce') }}</a></li>
                         </ul>
                     </li>
