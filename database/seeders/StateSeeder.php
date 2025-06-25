@@ -67,8 +67,6 @@ class StateSeeder extends Seeder
                         'country_id' => $country->id,
                     ]);
                 }
-            } else {
-                $this->command->warn("⚠️ لم يتم العثور على الدولة برمز: {$countryCode}");
             }
         }
     }

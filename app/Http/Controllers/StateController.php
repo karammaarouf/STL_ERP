@@ -93,4 +93,12 @@ class StateController extends Controller
         $this->stateService->deleteState($state);
         return redirect()->route('states.index')->with('success', __('State deleted successfully.'));
     }
+
+    /**
+ * Fetch states for a given country and return as JSON.
+ */
+ public function getStatesForCountry(Country $country)
+    {
+        return response()->json($country->states()->orderBy('name')->get());
+    }
 }
