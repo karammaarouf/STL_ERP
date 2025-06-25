@@ -5,15 +5,28 @@ namespace App\Http\Controllers;
 use App\Models\State;
 use App\Http\Requests\StoreStateRequest;
 use App\Http\Requests\UpdateStateRequest;
+use App\Services\StateService;
+use App\Models\Country;
 
 class StateController extends Controller
 {
+    protected $stateService;
+
+    public function __construct(StateService $stateService)
+    {
+        $this->stateService = $stateService;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+
+        if (!auth()->user()->can('view-state')) {
+            abort(403);
+        }
+        $states = $this->stateService->getAllStates();
+        return view('pages.states.index', compact('states'));
     }
 
     /**
@@ -21,7 +34,11 @@ class StateController extends Controller
      */
     public function create()
     {
-        //
+        if (!auth()->user()->can('create-state')) {
+            abort(403);
+        }
+        $countries = Country::all();
+        return view('pages.states.partials.create', compact('countries'));
     }
 
     /**
@@ -29,7 +46,11 @@ class StateController extends Controller
      */
     public function store(StoreStateRequest $request)
     {
-        //
+        if (!auth()->user()->can('create-state')) {
+            abort(403);
+        }
+        $this->stateService->createState($request->validated());
+        return redirect()->route('states.index')->with('success', __('State created successfully.'));
     }
 
     /**
@@ -37,7 +58,10 @@ class StateController extends Controller
      */
     public function show(State $state)
     {
-        //
+        if (!auth()->user()->can('show-state')) {
+            abort(403);
+        }
+        return view('pages.states.partials.show', compact('state'));
     }
 
     /**
@@ -45,22 +69,28 @@ class StateController extends Controller
      */
     public function edit(State $state)
     {
-        //
+        if (!auth()->user()->can('edit-state')) {
+            abort(403);
+        }
+        $countries = Country::all();
+        return view('pages.states.partials.edit', compact('state', 'countries'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateStateRequest $request, State $state)
     {
-        //
+        if (!auth()->user()->can('edit-state')) {
+            abort(403);
+        }
+        $this->stateService->updateState($state, $request->validated());
+        return redirect()->route('states.index')->with('success', __('State updated successfully.'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(State $state)
     {
-        //
+        if (!auth()->user()->can('delete-state')) {
+            abort(403);
+        }
+        $this->stateService->deleteState($state);
+        return redirect()->route('states.index')->with('success', __('State deleted successfully.'));
     }
 }
