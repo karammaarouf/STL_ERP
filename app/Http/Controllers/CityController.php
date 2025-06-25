@@ -115,6 +115,7 @@ class CityController extends Controller
 
     public function getCitiesForState(State $state)
     {
+
        if (!auth()->user()->can('view-city')) {
             abort(403, 'Unauthorized action.');
         }
