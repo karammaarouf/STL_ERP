@@ -44,9 +44,11 @@
                         <ul class="nav-submenu menu-content">
                         </ul>
                     </li>
-                    <li><a class="nav-link title" href="{{ route('countries.index') }}"> <i data-feather="globe"></i>
-                            <span>{{ __('Countries') }}</span></a>
+                    <li class="dropdown"><a class="nav-link menu-title" href="javascript:void(0)"><i
+                                data-feather="globe"></i><span>{{ __('Geographical Areas') }}</span></a>
                         <ul class="nav-submenu menu-content">
+                            <li><a href="{{ route('countries.index') }}">{{ __('Countries') }}</a></li>
+                            <li><a href="{{ route('states.index') }}">{{ __('States') }}</a></li>
                         </ul>
                     </li>
 

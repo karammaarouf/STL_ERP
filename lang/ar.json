@@ -89,5 +89,19 @@
     "Are you sure you want to delete this user?": "هل أنت متأكد من رغبتك في حذف هذا المستخدم؟",
     "User created successfully": "تم إنشاء المستخدم بنجاح",
     "User updated successfully": "تم تحديث المستخدم بنجاح",
-    "User deleted successfully": "تم حذف المستخدم بنجاح"
+    "User deleted successfully": "تم حذف المستخدم بنجاح",
+    "States": "المحافظات",
+    "State List": "قائمة المحافظات",
+    "Add New State": "إضافة محافظة جديدة",
+    "State Name": "اسم المحافظة",
+    "Edit State": "تعديل المحافظة",
+    "Are you sure you want to delete this state?": "هل أنت متأكد من رغبتك في حذف هذه المحافظة؟",
+    "State created successfully.": "تم إنشاء المحافظة بنجاح.",
+    "State updated successfully.": "تم تحديث المحافظة بنجاح.",
+    "State deleted successfully.": "تم حذف المحافظة بنجاح.",
+    "The state name is required.": "اسم المحافظة مطلوب.",
+    "The state name must be unique.": "اسم المحافظة يجب أن يكون فريدًا.",
+    "The country is required.": "الدولة مطلوبة.",
+    "State Details": "تفاصيل المحافظة",
+    "Geographical Areas": "المناطق الجغرافية"
 }
