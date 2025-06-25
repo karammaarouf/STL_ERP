@@ -16,8 +16,6 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::middleware(['auth'])->group(function () {
 
-Route::get('/countries/{country}/states', [StateController::class, 'getStatesForCountry']);
-Route::get('/states/{state}/cities', [CityController::class, 'getCitiesForState']);
-
-
+    Route::get('/countries/{country}/states', [StateController::class, 'getStatesForCountry']);
+    Route::get('/states/{state}/cities', [CityController::class, 'getCitiesForState']);
 });

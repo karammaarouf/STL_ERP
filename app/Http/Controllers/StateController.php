@@ -99,10 +99,10 @@ class StateController extends Controller
      */
     public function getStatesForCountry(Country $country)
     {
-        if (!auth()->user()->can('view-state')) {
+
+         if (!auth()->user()->can('view-state')) {
             abort(403);
         }
-
 
         return response()->json($country->states()->orderBy('name')->get());
     }
