@@ -3,17 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Models\City;
+use App\Models\State;
+use App\Services\CityService;
 use App\Http\Requests\StoreCityRequest;
 use App\Http\Requests\UpdateCityRequest;
 
 class CityController extends Controller
 {
+    protected $cityService;
+
+    public function __construct(CityService $cityService)
+    {
+        $this->cityService = $cityService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        if (!auth()->user()->can('view-city')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $cities = $this->cityService->getAllCities();
+        return view('pages.cities.index', compact('cities'));
     }
 
     /**
@@ -21,7 +35,12 @@ class CityController extends Controller
      */
     public function create()
     {
-        //
+        if (!auth()->user()->can('create-city')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $states = State::all();
+        return view('pages.cities.partials.create', compact('states'));
     }
 
     /**
@@ -29,7 +48,14 @@ class CityController extends Controller
      */
     public function store(StoreCityRequest $request)
     {
-        //
+        if (!auth()->user()->can('create-city')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $this->cityService->createCity($request->validated());
+
+        return redirect()->route('cities.index')
+            ->with('success', __('City created successfully.'));
     }
 
     /**
@@ -37,7 +63,11 @@ class CityController extends Controller
      */
     public function show(City $city)
     {
-        //
+        if (!auth()->user()->can('show-city')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return view('pages.cities.partials.show', compact('city'));
     }
 
     /**
@@ -45,7 +75,12 @@ class CityController extends Controller
      */
     public function edit(City $city)
     {
-        //
+        if (!auth()->user()->can('edit-city')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $states = State::all();
+        return view('pages.cities.partials.edit', compact('city', 'states'));
     }
 
     /**
@@ -53,7 +88,14 @@ class CityController extends Controller
      */
     public function update(UpdateCityRequest $request, City $city)
     {
-        //
+        if (!auth()->user()->can('edit-city')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $this->cityService->updateCity($city, $request->validated());
+
+        return redirect()->route('cities.index')
+            ->with('success', __('City updated successfully.'));
     }
 
     /**
@@ -61,6 +103,18 @@ class CityController extends Controller
      */
     public function destroy(City $city)
     {
-        //
+        if (!auth()->user()->can('delete-city')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $this->cityService->deleteCity($city);
+
+        return redirect()->route('cities.index')
+            ->with('success', __('City deleted successfully.'));
+    }
+
+    public function getCitiesForState(State $state)
+    {
+        return response()->json($state->cities()->orderBy('name')->get());
     }
 }

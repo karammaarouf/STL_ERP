@@ -103,5 +103,27 @@
     "The state name must be unique.": "اسم المحافظة يجب أن يكون فريدًا.",
     "The country is required.": "الدولة مطلوبة.",
     "State Details": "تفاصيل المحافظة",
-    "Geographical Areas": "المناطق الجغرافية"
+    "Geographical Areas": "المناطق الجغرافية",
+    "Cities": "المدن",
+    "City List": "قائمة المدن",
+    "Cities List": "قائمة المدن",
+    "Add New City": "إضافة مدينة جديدة",
+    "Edit City": "تعديل المدينة",
+    "City Name": "اسم المدينة",
+    "City Details": "تفاصيل المدينة",
+    "Select State": "اختر المحافظة",
+    "City created successfully.": "تم إنشاء المدينة بنجاح.",
+    "City updated successfully.": "تم تحديث المدينة بنجاح.",
+    "City deleted successfully.": "تم حذف المدينة بنجاح.",
+    "Cites": "المدن",
+    "Locations Management": "إدارة المواقع",
+   
+    "Search...": "بحث...",
+    "Select a country to see its states.": "اختر بلدًا لعرض محافظاته.",
+    "Select a state to see its cities.": "اختر محافظة لعرض مدنها.",
+    "Loading...": "جار التحميل...",
+    "No states found for this country.": "لم يتم العثور على محافظات لهذا البلد.",
+    "Failed to load states. Check browser console for details.": "فشل تحميل المحافظات. يرجى مراجعة وحدة التحكم في المتصفح للحصول على التفاصيل.",
+    "No cities found for this state.": "لم يتم العثور على مدن لهذه المحافظة.",
+    "Failed to load cities. Check browser console for details.": "فشل تحميل المدن. يرجى مراجعة وحدة التحكم في المتصفح للحصول على التفاصيل."
 }

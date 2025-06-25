@@ -44,11 +44,19 @@
                         <ul class="nav-submenu menu-content">
                         </ul>
                     </li>
-                    <li class="dropdown"><a class="nav-link menu-title" href="javascript:void(0)"><i
-                                data-feather="globe"></i><span>{{ __('Geographical Areas') }}</span></a>
+                    <li class="dropdown">
+                        {{-- تم تعديل الرابط الرئيسي هنا لمنع إعادة التحميل والسماح بفتح القائمة --}}
+                        <a class="nav-link menu-title" href="javascript:void(0)">
+                            <i data-feather="globe"></i>
+                            <span>{{ __('Geographical Areas') }}</span>
+                        </a>
                         <ul class="nav-submenu menu-content">
-                            <li><a href="{{ route('countries.index') }}">{{ __('Countries') }}</a></li>
-                            <li><a href="{{ route('states.index') }}">{{ __('States') }}</a></li>
+                            {{-- رابط جديد لصفحة الإدارة الموحدة --}}
+                            <li><a href="{{ route('locations.index') }}">{{ __('Locations Management') }}</a></li>
+                            <hr class="mt-1 mb-1" />
+                            <li><a href="{{ route('countries.index') }}">{{ __('Countries List') }}</a></li>
+                            <li><a href="{{ route('states.index') }}">{{ __('State List') }}</a></li>
+                            <li><a href="{{ route('cities.index') }}">{{ __('Cities List') }}</a></li>
                         </ul>
                     </li>
 

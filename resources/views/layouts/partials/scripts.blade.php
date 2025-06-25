@@ -47,3 +47,4 @@
 {{-- <script src="{{ asset('assets/js/theme-customizer/customizer.js') }}"></script> --}}
 <!-- login js-->
 <!-- Plugin used-->
+ @stack('scripts')
