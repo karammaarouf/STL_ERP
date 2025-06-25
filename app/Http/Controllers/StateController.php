@@ -95,13 +95,15 @@ class StateController extends Controller
     }
 
     /**
- * Fetch states for a given country and return as JSON.
- */
- public function getStatesForCountry(Country $country)
+     * Fetch states for a given country and return as JSON.
+     */
+    public function getStatesForCountry(Country $country)
     {
         if (!auth()->user()->can('view-state')) {
             abort(403);
         }
+
+
         return response()->json($country->states()->orderBy('name')->get());
     }
 }

@@ -117,6 +117,8 @@ class CityController extends Controller
     {
         if (!auth()->user()->can('view-city')) {
             abort(403, 'Unauthorized action.');
+
+            
         }
         return response()->json($state->cities()->orderBy('name')->get());
     }
