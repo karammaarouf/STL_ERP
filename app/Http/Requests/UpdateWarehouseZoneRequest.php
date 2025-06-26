@@ -11,7 +11,7 @@ class UpdateWarehouseZoneRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return auth()->user()->can('edit-warehouse-zone');
     }
 
     /**
@@ -21,8 +21,12 @@ class UpdateWarehouseZoneRequest extends FormRequest
      */
     public function rules(): array
     {
+        $zoneId = $this->route('warehouse_zone')->id;
+
         return [
-            //
+            'name' => 'required|string|max:150',
+            'code' => 'required|string|max:50|unique:warehouse_zones,code,' . $zoneId,
+            'warehouse_id' => 'required|exists:warehouses,id',
         ];
     }
 }

@@ -60,12 +60,14 @@
                         </ul>
                     </li>
 
-                     <li class="dropdown"><a class="nav-link menu-title" href="javascript:void(0)">
-                        <i class="fa fa-cubes"></i>  <span>{{ __('Warehouse') }}</span></a>
+                    <li class="dropdown"><a class="nav-link menu-title" href="javascript:void(0)">
+                            <i class="fa fa-cubes"></i> <span>{{ __('Warehouse') }}</span></a>
                         <ul class="nav-submenu menu-content">
-                            <li><a href="{{route('warehouses.index')}}">{{ __('Warehouse List') }}</a></li>
+                            <li><a href="{{ route('warehouses.index') }}">{{ __('Warehouse List') }}</a></li>
+                            <li><a href="{{ route('warehouse-zones.index') }}">{{ __('Warehouse Zones') }}</a></li>
                         </ul>
                     </li>
+
 
                 </ul>
             </div>

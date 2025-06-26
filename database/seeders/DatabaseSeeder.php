@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             StateSeeder::class,
             CitySeeder::class,
             WarehouseSeeder::class,
+            WarehouseZoneSeeder::class,
         ]);
     }
 }

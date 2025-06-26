@@ -7,6 +7,7 @@ use App\Http\Controllers\StateController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\WarehouseZoneController;
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', function () {
@@ -26,8 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('cities', CityController::class);
     Route::get('/locations', [LocationController::class, 'index'])->name('locations.index');
     Route::resource('warehouses', WarehouseController::class);
-
-
+    Route::resource('warehouse-zones', WarehouseZoneController::class);
 });
 
 require __DIR__ . '/auth.php';
