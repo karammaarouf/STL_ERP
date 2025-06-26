@@ -47,7 +47,7 @@
                     <li class="dropdown">
                         {{-- تم تعديل الرابط الرئيسي هنا لمنع إعادة التحميل والسماح بفتح القائمة --}}
                         <a class="nav-link menu-title" href="javascript:void(0)">
-                            <i data-feather="globe"></i>
+                            <i class="icofont icofont-world"></i>
                             <span>{{ __('Geographical Areas') }}</span>
                         </a>
                         <ul class="nav-submenu menu-content">
@@ -57,6 +57,13 @@
                             <li><a href="{{ route('countries.index') }}">{{ __('Countries List') }}</a></li>
                             <li><a href="{{ route('states.index') }}">{{ __('State List') }}</a></li>
                             <li><a href="{{ route('cities.index') }}">{{ __('Cities List') }}</a></li>
+                        </ul>
+                    </li>
+
+                     <li class="dropdown"><a class="nav-link menu-title" href="javascript:void(0)">
+                        <i class="fa fa-cubes"></i>  <span>{{ __('Warehouse') }}</span></a>
+                        <ul class="nav-submenu menu-content">
+                            <li><a href="{{route('warehouses.index')}}">{{ __('Warehouse List') }}</a></li>
                         </ul>
                     </li>
 

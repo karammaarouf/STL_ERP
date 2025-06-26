@@ -67,8 +67,7 @@ class CountrySeeder extends Seeder
         }
 
 
-        // إعطاء الصلاحيات لدور الـ Super Admin
-        // تأكد من أن لديك دور بهذا الاسم أو قم بتغييره للاسم الصحيح
+   
         $superAdminRole = Role::where('name', 'super-admin')->first();
 
         if ($superAdminRole) {
