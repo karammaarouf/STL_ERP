@@ -25,7 +25,7 @@
                                 <th scope="col">{{ __('Country') }}</th>
                                 <th scope="col">{{ __('Type') }}</th>
                                 @canany(['edit-warehouse', 'delete-warehouse', 'show-warehouse'])
-                                <th scope="col">{{ __('Options') }}</th>
+                                <th class="text-center" scope="col">{{ __('Options') }}</th>
                                 @endcanany
                             </tr>
                         </thead>
@@ -40,28 +40,39 @@
                                     <td>{{ $warehouse->city->state->country->name ?? __('N/A') }}</td>
                                     <td>{{ __($warehouse->type) }}</td>
                                     @canany(['edit-warehouse', 'delete-warehouse', 'show-warehouse'])
-                                    <td>
-                                        <div class="dropdown">
-                                            <button class="btn" type="button" id="dropdownMenuButton{{ $warehouse->id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="fa fa-ellipsis-v"></i>
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $warehouse->id }}">
-                                                @can('show-warehouse')
-                                                <li><a class="dropdown-item" href="{{ route('warehouses.show', $warehouse->id) }}">{{ __('Details') }}</a></li>
-                                                @endcan
-                                                @can('edit-warehouse')
-                                                <li><a class="dropdown-item" href="{{ route('warehouses.edit', $warehouse->id) }}">{{ __('Edit') }}</a></li>
-                                                @endcan
-                                                @can('delete-warehouse')
-                                                <li>
-                                                    <form action="{{ route('warehouses.destroy', $warehouse->id) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="dropdown-item text-danger" onclick="return confirm('{{ __('Are you sure you want to delete this warehouse?') }}')">{{ __('Delete') }}</button>
-                                                    </form>
-                                                </li>
-                                                @endcan
-                                            </ul>
+                                    <td class="text-center align-middle border-1">
+                                        <div class="d-flex gap-1 justify-content-center align-items-center">
+                                            @can('show-warehouse')
+                                                <a href="{{ route('warehouses.show', $warehouse->id) }}" 
+                                                   class="btn btn-sm btn-outline-primary" 
+                                                   title="{{ __('Details') }}">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                            @endcan
+                                            
+                                            @can('edit-warehouse')
+                                                <a href="{{ route('warehouses.edit', $warehouse->id) }}" 
+                                                   class="btn btn-sm btn-outline-warning" 
+                                                   title="{{ __('Edit') }}">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            @endcan
+                                            
+                                            @can('delete-warehouse')
+                                                <form action="{{ route('warehouses.destroy', $warehouse->id) }}" 
+                                                      method="POST" 
+                                                      style="display:inline;" 
+                                                      class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" 
+                                                            class="btn btn-sm btn-outline-danger" 
+                                                            title="{{ __('Delete') }}"
+                                                            onclick="return confirm('{{ __('Are you sure you want to delete this warehouse?') }}')">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            @endcan
                                         </div>
                                     </td>
                                     @endcanany

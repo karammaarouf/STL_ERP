@@ -21,7 +21,7 @@
                                     <th scope="col">{{ __('City Name') }}</th>
                                     <th scope="col">{{ __('State Name') }}</th>
                                     @canany(['edit-city', 'delete-city', 'show-city'])
-                                    <th scope="col">{{ __('Options') }}</th>
+                                        <th class="text-center" scope="col">{{ __('Options') }}</th>
                                     @endcanany
                                 </tr>
                             </thead>
@@ -29,39 +29,46 @@
                                 @forelse ($cities as $city)
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
-                                        <td>  <i class="flag-icon flag-icon-{{ strtolower($city->state->country->iso_code) }}"></i> {{ $city->name }}</td>
-
+                                        <td> <i class="flag-icon flag-icon-{{ strtolower($city->state->country->iso_code) }}"></i>
+                                            {{ $city->name }}</td>
                                         <td>{{ $city->state->name ?? __('Not Found') }}</td>
 
                                         @canany(['edit-city', 'delete-city', 'show-city'])
-                                        <td>
-                                            <div class="dropdown">
-                                                <button class="btn" type="button" id="dropdownMenuButton{{ $city->id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fa fa-ellipsis-v"></i>
-                                                </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $city->id }}">
-                                                    @can('edit-city')
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('cities.edit', $city->id) }}">{{ __('Edit') }}</a>
-                                                    </li>
-                                                    @endcan
+                                            <td class="text-center align-middle border-1">
+                                                <div class="d-flex gap-1 justify-content-center align-items-center">
                                                     @can('show-city')
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('cities.show', $city->id) }}">{{ __('City Details') }}</a>
-                                                    </li>
+                                                        <a href="{{ route('cities.show', $city->id) }}" 
+                                                           class="btn btn-sm btn-outline-primary" 
+                                                           title="{{ __('Details') }}">
+                                                            <i class="fa fa-eye"></i>
+                                                        </a>
                                                     @endcan
+                                                    
+                                                    @can('edit-city')
+                                                        <a href="{{ route('cities.edit', $city->id) }}" 
+                                                           class="btn btn-sm btn-outline-warning" 
+                                                           title="{{ __('Edit') }}">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                    @endcan
+                                                    
                                                     @can('delete-city')
-                                                    <li>
-                                                        <form action="{{ route('cities.destroy', $city->id) }}" method="POST" style="display:inline;">
+                                                        <form action="{{ route('cities.destroy', $city->id) }}" 
+                                                              method="POST" 
+                                                              style="display:inline;" 
+                                                              class="d-inline">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="dropdown-item" onclick="return confirm('هل أنت متأكد من رغبتك في حذف هذه المدينة؟')">{{ __('Delete') }}</button>
+                                                            <button type="submit" 
+                                                                    class="btn btn-sm btn-outline-danger" 
+                                                                    title="{{ __('Delete') }}"
+                                                                    onclick="return confirm('هل أنت متأكد من رغبتك في حذف هذه المدينة؟')">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
                                                         </form>
-                                                    </li>
                                                     @endcan
-                                                </ul>
-                                            </div>
-                                        </td>
+                                                </div>
+                                            </td>
                                         @endcanany
                                     </tr>
                                 @empty

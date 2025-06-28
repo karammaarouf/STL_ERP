@@ -20,8 +20,8 @@
                                     <th scope="col">#</th>
                                     <th scope="col">{{ __('Country Name') }}</th>
                                     <th scope="col">{{ __('Country Code') }}</th>
-                                    @canany(['edit-country', 'delete-country'])
-                                    <th scope="col">{{ __('Options') }}</th>
+                                    @canany(['edit-country', 'delete-country', 'show-country'])
+                                        <th class="text-center" scope="col">{{ __('Options') }}</th>
                                     @endcanany
                                 </tr>
                             </thead>
@@ -29,37 +29,45 @@
                                 @forelse ($countries as $country)
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
-                                        <td> <i class="flag-icon flag-icon-{{ strtolower($country->iso_code) }}"></i>  {{ $country->name }} </td>
+                                        <td> <i class="flag-icon flag-icon-{{ strtolower($country->iso_code) }}"></i>
+                                            {{ $country->name }} </td>
                                         <td>{{ $country->iso_code }}</td>
-                                        @canany(['edit-country', 'delete-country'])
-                                        <td>
-                                            <div class="dropdown">
-                                                <button class="btn" type="button" id="dropdownMenuButton{{ $country->id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fa fa-ellipsis-v"></i>
-                                                </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $country->id }}">
-                                                    @can('edit-country')
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('countries.edit', $country->id) }}">{{ __('Edit') }}</a>
-                                                    </li>
-                                                    @endcan
+                                        @canany(['edit-country', 'delete-country', 'show-country'])
+                                            <td class="text-center align-middle border-1">
+                                                <div class="d-flex gap-1 justify-content-center align-items-center">
                                                     @can('show-country')
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('countries.show', $country->id) }}">{{ __('Country Details') }}</a>
-                                                    </li>
+                                                        <a href="{{ route('countries.show', $country->id) }}" 
+                                                           class="btn btn-sm btn-outline-primary" 
+                                                           title="{{ __('Details') }}">
+                                                            <i class="fa fa-eye"></i>
+                                                        </a>
                                                     @endcan
+                                                    
+                                                    @can('edit-country')
+                                                        <a href="{{ route('countries.edit', $country->id) }}" 
+                                                           class="btn btn-sm btn-outline-warning" 
+                                                           title="{{ __('Edit') }}">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                    @endcan
+                                                    
                                                     @can('delete-country')
-                                                    <li>
-                                                        <form action="{{ route('countries.destroy', $country->id) }}" method="POST" style="display:inline;">
+                                                        <form action="{{ route('countries.destroy', $country->id) }}" 
+                                                              method="POST" 
+                                                              style="display:inline;" 
+                                                              class="d-inline">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="dropdown-item" onclick="return confirm('هل أنت متأكد من رغبتك في حذف هذه الدولة؟')">حذف</button>
+                                                            <button type="submit" 
+                                                                    class="btn btn-sm btn-outline-danger" 
+                                                                    title="{{ __('Delete') }}"
+                                                                    onclick="return confirm('هل أنت متأكد من رغبتك في حذف هذه الدولة؟')">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
                                                         </form>
-                                                    </li>
                                                     @endcan
-                                                </ul>
-                                            </div>
-                                        </td>
+                                                </div>
+                                            </td>
                                         @endcanany
                                     </tr>
                                 @empty
@@ -71,7 +79,7 @@
                         </table>
                     </div>
                     <div class="card-footer">
-                      @include('pagination.page', ['page' => $countries])
+                        @include('pagination.page', ['page' => $countries])
                     </div>
                 </div>
             </div>

@@ -23,7 +23,7 @@
                                     <th scope="col">{{ __('Status') }}</th>
                                     <th scope="col">{{ __('Roles') }}</th>
                                     @canany(['edit-user', 'delete-user'])
-                                        <th scope="col">{{ __('Options') }}</th>
+                                        <th class="text-center" scope="col">{{ __('Options') }}</th>
                                     @endcanany
                                 </tr>
                             </thead>
@@ -36,16 +36,17 @@
                                         <td>
                                             @can('edit-user')
                                                 <div class="media">
-                                                    <label class="col-form-label m-r-10">{{ $user->is_active ? __('Active') : __('Inactive') }}</label>
+                                                    <label
+                                                        class="col-form-label m-r-10">{{ $user->is_active ? __('Active') : __('Inactive') }}</label>
                                                     <div class="media-body text-start switch-sm icon-state">
-                                                        <form action="{{ route('users.toggle-status', $user->id) }}" method="POST" style="display: inline;">
+                                                        <form action="{{ route('users.toggle-status', $user->id) }}"
+                                                            method="POST" style="display: inline;">
                                                             @csrf
                                                             @method('PATCH')
                                                             <label class="switch">
-                                                                <input class="status-toggle" 
-                                                                       type="checkbox" 
-                                                                       {{ $user->is_active ? 'checked' : '' }}
-                                                                       onchange="this.form.submit()">
+                                                                <input class="status-toggle" type="checkbox"
+                                                                    {{ $user->is_active ? 'checked' : '' }}
+                                                                    onchange="this.form.submit()">
                                                                 <span class="switch-state"></span>
                                                             </label>
                                                         </form>
@@ -65,40 +66,40 @@
                                             @endif
                                         </td>
 
-                                        @canany(['edit-user', 'delete-user'])
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button class="btn" type="button"
-                                                        id="dropdownMenuButton{{ $user->id }}" data-bs-toggle="dropdown"
-                                                        aria-expanded="false">
-                                                        <i class="fa fa-ellipsis-v"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu"
-                                                        aria-labelledby="dropdownMenuButton{{ $user->id }}">
-                                                        @can('edit-user')
-                                                            <li>
-                                                                <a class="dropdown-item"
-                                                                    href="{{ route('users.edit', $user->id) }}">{{ __('Edit') }}</a>
-                                                            </li>
-                                                        @endcan
-                                                        @can('show-user')
-                                                            <li>
-                                                                <a class="dropdown-item"
-                                                                    href="{{ route('users.show', $user->id) }}">{{ __('User Details') }}</a>
-                                                            </li>
-                                                        @endcan
-                                                        @can('delete-user')
-                                                            <li>
-                                                                <form action="{{ route('users.destroy', $user->id) }}"
-                                                                    method="POST" style="display:inline;">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit" class="dropdown-item"
-                                                                        onclick="return confirm('{{ __('Are you sure you want to delete this user?') }}')">{{ __('Delete') }}</button>
-                                                                </form>
-                                                            </li>
-                                                        @endcan
-                                                    </ul>
+                                        @canany(['edit-user', 'delete-user', 'show-user'])
+                                            <td class="text-center align-middle border-1">
+                                                <div class="d-flex gap-1 justify-content-center align-items-center">
+                                                    @can('show-user')
+                                                        <a href="{{ route('users.show', $user->id) }}" 
+                                                           class="btn btn-sm btn-outline-primary" 
+                                                           title="{{ __('Details') }}">
+                                                            <i class="fa fa-eye"></i>
+                                                        </a>
+                                                    @endcan
+                                                    
+                                                    @can('edit-user')
+                                                        <a href="{{ route('users.edit', $user->id) }}" 
+                                                           class="btn btn-sm btn-outline-warning" 
+                                                           title="{{ __('Edit') }}">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                    @endcan
+                                                    
+                                                    @can('delete-user')
+                                                        <form action="{{ route('users.destroy', $user->id) }}" 
+                                                              method="POST" 
+                                                              style="display:inline;" 
+                                                              class="d-inline">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" 
+                                                                    class="btn btn-sm btn-outline-danger" 
+                                                                    title="{{ __('Delete') }}"
+                                                                    onclick="return confirm('{{ __('Are you sure you want to delete this user?') }}')">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endcan
                                                 </div>
                                             </td>
                                         @endcanany

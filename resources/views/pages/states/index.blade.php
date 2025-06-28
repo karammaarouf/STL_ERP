@@ -21,7 +21,7 @@
                                     <th scope="col">{{ __('State Name') }}</th>
                                     <th scope="col">{{ __('Country Name') }}</th>
                                     @canany(['edit-state', 'delete-state', 'show-state'])
-                                    <th scope="col">{{ __('Options') }}</th>
+                                        <th class="text-center" scope="col">{{ __('Options') }}</th>
                                     @endcanany
                                 </tr>
                             </thead>
@@ -30,37 +30,45 @@
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
                                         <td>{{ $state->name }}</td>
-                                        <td> <i class="flag-icon flag-icon-{{ strtolower($state->country->iso_code) }}"></i>  {{ $state->country->name  }} </td>
+                                        <td> <i class="flag-icon flag-icon-{{ strtolower($state->country->iso_code) }}"></i>
+                                            {{ $state->country->name }} </td>
 
                                         @canany(['edit-state', 'delete-state', 'show-state'])
-                                        <td>
-                                            <div class="dropdown">
-                                                <button class="btn" type="button" id="dropdownMenuButton{{ $state->id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fa fa-ellipsis-v"></i>
-                                                </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $state->id }}">
-                                                    @can('edit-state')
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('states.edit', $state->id) }}">{{ __('Edit') }}</a>
-                                                    </li>
-                                                    @endcan
+                                            <td class="text-center align-middle border-1">
+                                                <div class="d-flex gap-1 justify-content-center align-items-center">
                                                     @can('show-state')
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('states.show', $state->id) }}">{{ __('State Details') }}</a>
-                                                    </li>
+                                                        <a href="{{ route('states.show', $state->id) }}" 
+                                                           class="btn btn-sm btn-outline-primary" 
+                                                           title="{{ __('Details') }}">
+                                                            <i class="fa fa-eye"></i>
+                                                        </a>
                                                     @endcan
+                                                    
+                                                    @can('edit-state')
+                                                        <a href="{{ route('states.edit', $state->id) }}" 
+                                                           class="btn btn-sm btn-outline-warning" 
+                                                           title="{{ __('Edit') }}">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                    @endcan
+                                                    
                                                     @can('delete-state')
-                                                    <li>
-                                                        <form action="{{ route('states.destroy', $state->id) }}" method="POST" style="display:inline;">
+                                                        <form action="{{ route('states.destroy', $state->id) }}" 
+                                                              method="POST" 
+                                                              style="display:inline;" 
+                                                              class="d-inline">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="dropdown-item" onclick="return confirm('هل أنت متأكد من رغبتك في حذف هذه المحافظة؟')">حذف</button>
+                                                            <button type="submit" 
+                                                                    class="btn btn-sm btn-outline-danger" 
+                                                                    title="{{ __('Delete') }}"
+                                                                    onclick="return confirm('هل أنت متأكد من رغبتك في حذف هذه المحافظة؟')">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
                                                         </form>
-                                                    </li>
                                                     @endcan
-                                                </ul>
-                                            </div>
-                                        </td>
+                                                </div>
+                                            </td>
                                         @endcanany
                                     </tr>
                                 @empty
@@ -72,7 +80,7 @@
                         </table>
                     </div>
                     <div class="card-footer">
-                      @include('pagination.page', ['page' => $states])
+                        @include('pagination.page', ['page' => $states])
                     </div>
                 </div>
             </div>
