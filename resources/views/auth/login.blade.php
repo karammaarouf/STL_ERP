@@ -43,6 +43,7 @@
     </div>
     <!-- Loader ends-->
     <!-- page-wrapper Start-->
+    @include('layouts.partials.messages')
     <section>         
       <div class="container-fluid p-0">
         <div class="row">
@@ -70,6 +71,7 @@
                     <input id="checkbox1" type="checkbox">
                     <label for="checkbox1">{{ __('Remember password') }}</label>
                   </div><a class="link" href="">{{ __('Forgot password?') }}</a>
+
                 </div>
                 <div class="form-group">
                   <button class="btn btn-primary btn-block" type="submit">{{ __('Sign in') }}</button>

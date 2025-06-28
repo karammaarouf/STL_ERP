@@ -14,13 +14,22 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
+    // في method store
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
+        
+        // التحقق من حالة تفعيل الحساب
+        if (!Auth::user()->is_active) {
+            Auth::logout();
+            return back()->with([
+                'error' => __('Your account has been deactivated. Please contact administrator.'),
+            ]);
+        }
+    
         $request->session()->regenerate();
-
-        return redirect()->intended(route('dashboard'));
+    
+        return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**

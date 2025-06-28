@@ -33,7 +33,10 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label" for="password">{{ __('Password') }}</label>
-                            <input class="form-control @error('password') is-invalid @enderror" type="password" id="password" name="password" required>
+                            <div class="form-input position-relative">
+                                <input class="form-control @error('password') is-invalid @enderror" type="password" id="password" name="password" required>
+                                <div class="show-hide" style="right: 85%"><span class="show"></span></div>
+                            </div>
                             @error('password')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -42,7 +45,10 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label" for="password_confirmation">{{ __('Confirm Password') }}</label>
-                            <input class="form-control" type="password" id="password_confirmation" name="password_confirmation" required>
+                            <div class="form-input position-relative">
+                                <input class="form-control" type="password" id="password_confirmation" name="password_confirmation" required>
+                                <div class="show-hide"style="right: 85%"><span class="show"></span></div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-12">

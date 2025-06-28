@@ -18,6 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
+            'user.active' => \App\Http\Middleware\CheckUserActive::class,
+        ]);
+
+        $middleware->web(append: [
+            \App\Http\Middleware\CheckUserActive::class,
         ]);
 
         //
