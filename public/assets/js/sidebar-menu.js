@@ -202,27 +202,183 @@ $("#left-arrow").click(function () {
     }
 });
 
-// page active
-$( ".main-navbar" ).find( "a" ).removeClass("active");
-$( ".main-navbar" ).find( "li" ).removeClass("active");
+// page active - improved logic
+$(".main-navbar").find("a").removeClass("active");
+$(".main-navbar").find("li").removeClass("active");
 
 var current = window.location.pathname;
-$(".main-navbar ul>li a").filter(function() {
+var found = false;
+
+// First, try to find exact match for all links (including standalone items)
+$(".main-navbar ul>li a, .main-navbar ul>li>a").each(function() {
     var link = $(this).attr("href");
-    if(link){
-        if (current.indexOf(link) != -1) {
-            $(this).parents().children('a').addClass('active');
-            $(this).parents().parents().children('ul').css('display', 'block');
-            $(this).addClass('active');
-            $(this).parent().parent().parent().children('a').find('div').replaceWith('<div class="according-menu"><i class="fa fa-angle-down"></i></div>');
-            $(this).parent().parent().parent().parent().parent().children('a').find('div').replaceWith('<div class="according-menu"><i class="fa fa-angle-down"></i></div>');
-            return false;
+    if (link && link === current) {
+        $(this).addClass('active');
+        $(this).closest('li').addClass('active');
+        
+        // Check if it's a submenu item
+        var parentMenu = $(this).closest('.menu-content');
+        if (parentMenu.length) {
+            parentMenu.css('display', 'block');
+            parentMenu.prev('.menu-title').addClass('active');
+            parentMenu.prev('.menu-title').find('div').replaceWith('<div class="according-menu"><i class="fa fa-angle-down"></i></div>');
         }
+        
+        found = true;
+        return false; // Break the loop
     }
 });
 
-if ($('a.nav-link.menu-title.active').length) {
+// If no exact match found, try partial match (but exclude root path)
+if (!found) {
+    $(".main-navbar ul>li a, .main-navbar ul>li>a").each(function() {
+        var link = $(this).attr("href");
+        if (link && current.indexOf(link) !== -1 && link !== '/' && link.length > 1) {
+            $(this).addClass('active');
+            $(this).closest('li').addClass('active');
+            
+            // Check if it's a submenu item
+            var parentMenu = $(this).closest('.menu-content');
+            if (parentMenu.length) {
+                parentMenu.css('display', 'block');
+                parentMenu.prev('.menu-title').addClass('active');
+                parentMenu.prev('.menu-title').find('div').replaceWith('<div class="according-menu"><i class="fa fa-angle-down"></i></div>');
+            }
+            
+            return false; // Break the loop
+        }
+    });
+}
+
+// Save active menu state to localStorage
+function saveActiveMenuState() {
+    // Clear all previous states
+    localStorage.removeItem('activeMenus');
+    localStorage.removeItem('activeSubmenus');
+    localStorage.removeItem('activeStandalone');
+    
+    var activeMenus = [];
+    $('.menu-title.active').each(function() {
+        var menuText = $(this).find('span').text().trim();
+        if (menuText) {
+            activeMenus.push(menuText);
+        }
+    });
+    
+    var activeSubmenus = [];
+    $('.nav-submenu a.active').each(function() {
+        activeSubmenus.push($(this).attr('href'));
+    });
+    
+    // Save standalone menu items (like Profile)
+    var activeStandalone = [];
+    $('.nav-menu > li > a.active').each(function() {
+        if (!$(this).hasClass('menu-title')) {
+            activeStandalone.push($(this).attr('href'));
+        }
+    });
+    
+    // Only save if there are active items
+    if (activeMenus.length > 0) {
+        localStorage.setItem('activeMenus', JSON.stringify(activeMenus));
+    }
+    if (activeSubmenus.length > 0) {
+        localStorage.setItem('activeSubmenus', JSON.stringify(activeSubmenus));
+    }
+    if (activeStandalone.length > 0) {
+        localStorage.setItem('activeStandalone', JSON.stringify(activeStandalone));
+    }
+}
+
+// Load active menu state from localStorage
+function loadActiveMenuState() {
+    try {
+        // First, clear all active states
+        $('.nav-menu > li > a').removeClass('active');
+        $('.nav-menu > li').removeClass('active');
+        $('.menu-title').removeClass('active');
+        $('.nav-submenu a').removeClass('active');
+        $('.menu-content').hide();
+        $('.menu-title').find('div').replaceWith('<div class="according-menu"><i class="fa fa-angle-right"></i></div>');
+        
+        var activeMenus = JSON.parse(localStorage.getItem('activeMenus') || '[]');
+        var activeSubmenus = JSON.parse(localStorage.getItem('activeSubmenus') || '[]');
+        var activeStandalone = JSON.parse(localStorage.getItem('activeStandalone') || '[]');
+        
+        // Restore main menu states
+        activeMenus.forEach(function(menuText) {
+            $('.menu-title').each(function() {
+                if ($(this).find('span').text().trim() === menuText) {
+                    $(this).addClass('active');
+                    $(this).next('.menu-content').css('display', 'block');
+                    $(this).find('div').replaceWith('<div class="according-menu"><i class="fa fa-angle-down"></i></div>');
+                }
+            });
+        });
+        
+        // Restore submenu states
+        activeSubmenus.forEach(function(href) {
+            $('.nav-submenu a[href="' + href + '"]').addClass('active');
+        });
+        
+        // Restore standalone menu states (like Profile)
+        activeStandalone.forEach(function(href) {
+            $('.nav-menu > li > a[href="' + href + '"]').addClass('active');
+            $('.nav-menu > li > a[href="' + href + '"]').closest('li').addClass('active');
+        });
+    } catch (e) {
+        console.log('Error loading menu state:', e);
+    }
+}
+
+// Save state when menu items are clicked
+// Save state when menu items are clicked
+$('.menu-title').on('click', function() {
+// Clear standalone active states when dropdown is clicked
+$('.nav-menu > li > a').not('.menu-title').removeClass('active');
+setTimeout(saveActiveMenuState, 100);
+});
+
+$('.nav-submenu a').on('click', function() {
+// Clear all active states
+$('.nav-submenu a').removeClass('active');
+$('.nav-menu > li > a').not('.menu-title').removeClass('active');
+$('.nav-menu > li').not($(this).closest('li')).removeClass('active');
+    
+// Set current submenu item as active
+$(this).addClass('active');
+$(this).closest('li').addClass('active');
+    
+setTimeout(saveActiveMenuState, 100);
+});
+
+// Save state when standalone items are clicked (like Profile)
+$('.nav-menu > li > a').not('.menu-title').on('click', function() {
+    // Remove active class from all menu items
+    $('.nav-menu > li > a').removeClass('active');
+    $('.nav-menu > li').removeClass('active');
+    $('.menu-title').removeClass('active');
+    $('.nav-submenu a').removeClass('active');
+    
+    // Hide all dropdown menus
+    $('.menu-content').slideUp(300);
+    $('.menu-title').find('div').replaceWith('<div class="according-menu"><i class="fa fa-angle-right"></i></div>');
+    
+    // Set current item as active
+    $(this).addClass('active');
+    $(this).closest('li').addClass('active');
+    
+    setTimeout(saveActiveMenuState, 100);
+});
+
+// Load state on page load
+$(document).ready(function() {
+    loadActiveMenuState();
+});
+
+// Auto scroll to active element
+if ($('a.nav-link.active').length) {
     $('.custom-scrollbar').animate({
-        scrollTop: $('a.nav-link.menu-title.active').offset().top - 500
+        scrollTop: $('a.nav-link.active').offset().top - 500
     }, 1000);
 }
