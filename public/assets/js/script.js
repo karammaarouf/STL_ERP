@@ -267,17 +267,17 @@ $('.show-hide span').removeClass('show'); // إزالة class show في البد
 $('.show-hide span').click(function () {
 if ($(this).hasClass('show')) {
     // إذا كان النص "hide" (class show موجود)، اخفي كلمة المرور
-    $('input[name="password"]').attr('type', 'password');
+    $(this).closest('.form-input').find('input[name="password"], input[name="password_confirmation"]').attr('type', 'password');
     $(this).removeClass('show'); // سيظهر "show"
 } else {
     // إذا كان النص "show" (class show غير موجود)، اظهر كلمة المرور
-    $('input[name="password"]').attr('type', 'text');
+    $(this).closest('.form-input').find('input[name="password"], input[name="password_confirmation"]').attr('type', 'text');
     $(this).addClass('show'); // سيظهر "hide"
 }
 });
 $('form button[type="submit"]').on('click', function () {
 $('.show-hide span').removeClass('show'); // إعادة تعيين إلى "show"
-$('.show-hide').parent().find('input[name="password"]').attr('type', 'password');
+$('.show-hide').parent().find('input[name="password"], input[name="password_confirmation"]').attr('type', 'password');
 });
 
 

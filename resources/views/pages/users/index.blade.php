@@ -1,4 +1,4 @@
-@extends('../layouts.app')
+@extends('layouts.app')
 
 @section('title', __('Users'))
 
@@ -20,6 +20,7 @@
                                     <th scope="col">#</th>
                                     <th scope="col">{{ __('User Name') }}</th>
                                     <th scope="col">{{ __('Email') }}</th>
+                                    <th scope="col">{{ __('Status') }}</th>
                                     <th scope="col">{{ __('Roles') }}</th>
                                     @canany(['edit-user', 'delete-user'])
                                         <th scope="col">{{ __('Options') }}</th>
@@ -33,13 +34,36 @@
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>
+                                            @can('edit-user')
+                                                <div class="media">
+                                                    <label class="col-form-label m-r-10">{{ $user->is_active ? __('Active') : __('Inactive') }}</label>
+                                                    <div class="media-body text-start switch-sm icon-state">
+                                                        <form action="{{ route('users.toggle-status', $user->id) }}" method="POST" style="display: inline;">
+                                                            @csrf
+                                                            @method('PATCH')
+                                                            <label class="switch">
+                                                                <input class="status-toggle" 
+                                                                       type="checkbox" 
+                                                                       {{ $user->is_active ? 'checked' : '' }}
+                                                                       onchange="this.form.submit()">
+                                                                <span class="switch-state"></span>
+                                                            </label>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <span class="badge {{ $user->is_active ? 'badge-success' : 'badge-danger' }}">
+                                                    {{ $user->is_active ? __('Active') : __('Inactive') }}
+                                                </span>
+                                            @endcan
+                                        </td>
+                                        <td>
                                             @if (!empty($user->getRoleNames()))
                                                 @foreach ($user->getRoleNames() as $v)
                                                     <label class="badge badge-success">{{ $v }}</label>
                                                 @endforeach
                                             @endif
                                         </td>
-
 
                                         @canany(['edit-user', 'delete-user'])
                                             <td>
@@ -76,14 +100,12 @@
                                                         @endcan
                                                     </ul>
                                                 </div>
-
-
                                             </td>
                                         @endcanany
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="text-center">{{ __('No data to display') }}</td>
+                                        <td colspan="6" class="text-center">{{ __('No data to display') }}</td>
                                     </tr>
                                 @endforelse
                             </tbody>

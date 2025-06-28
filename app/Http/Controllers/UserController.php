@@ -7,6 +7,7 @@ use App\Services\UserService;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Spatie\Permission\Models\Role;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -64,5 +65,19 @@ class UserController extends Controller
 
         return redirect()->route('users.index')
             ->with('success', __('User deleted successfully'));
+    }
+
+    /**
+     * Toggle user active status
+     */
+    public function toggleStatus(Request $request, User $user)
+    {
+        $user->update([
+            'is_active' => !$user->is_active
+        ]);
+        
+        $message = $user->is_active ? __('User has been activated') : __('User has been deactivated');
+        
+        return redirect()->route('users.index')->with('success', $message);
     }
 }
