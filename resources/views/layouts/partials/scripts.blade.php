@@ -47,4 +47,24 @@
 {{-- <script src="{{ asset('assets/js/theme-customizer/customizer.js') }}"></script> --}}
 <!-- login js-->
 <!-- Plugin used-->
- @stack('scripts')
+<script>
+    $(function() {
+        var currentPath = window.location.pathname;
+        $('.main-navbar ul>li a').each(function() {
+            var linkPath = this.pathname;
+            if (currentPath.startsWith(linkPath)) {
+                $(this).addClass('active');
+                $(this).closest('li').addClass('active');
+                var submenu = $(this).closest('ul.nav-submenu');
+                if (submenu.length) {
+                    submenu.show();
+                    submenu.prev('a.menu-title').addClass('active')
+                        .find('div.according-menu i')
+                        .removeClass('fa-angle-right').addClass('fa-angle-down');
+                }
+                return false;
+            }
+        });
+    });
+</script>
+@stack('scripts')
