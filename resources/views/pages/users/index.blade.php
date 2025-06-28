@@ -89,13 +89,13 @@
                                                         <form action="{{ route('users.destroy', $user->id) }}" 
                                                               method="POST" 
                                                               style="display:inline;" 
-                                                              class="d-inline">
+                                                              class="d-inline delete-form">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" 
-                                                                    class="btn btn-sm btn-outline-danger" 
+                                                            <button type="button" 
+                                                                    class="btn btn-sm btn-outline-danger delete-btn" 
                                                                     title="{{ __('Delete') }}"
-                                                                    onclick="return confirm('{{ __('Are you sure you want to delete this user?') }}')">
+                                                                    data-user-name="{{ $user->name }}">
                                                                 <i class="fa fa-trash"></i>
                                                             </button>
                                                         </form>

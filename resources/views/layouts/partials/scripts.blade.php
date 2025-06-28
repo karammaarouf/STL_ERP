@@ -44,7 +44,28 @@
 <!-- Plugins JS Ends-->
 <!-- Theme js-->
 <script src="{{ asset('assets/js/script.js') }}"></script>
-{{-- <script src="{{ asset('assets/js/theme-customizer/customizer.js') }}"></script> --}}
+{{-- <script src="{{ asset('assets/js/theme-customizer/customizer.js') }}" --}}
 <!-- login js-->
 <!-- Plugin used-->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // معالج أزرار الحذف
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    
+    deleteButtons.forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const cityName = this.getAttribute('data-city-name');
+            const form = this.closest('.delete-form');
+            const message = `هل أنت متأكد من رغبتك في حذف المدينة "${cityName}"؟ هذا الإجراء لا يمكن التراجع عنه.`;
+            
+            showFormConfirmationModal(message, form);
+        });
+    });
+});
+</script>
+<!-- تضمين مكون التأكيد المنبثق -->
+@include('layouts.partials.confirmation-modal')
+
 @stack('scripts')

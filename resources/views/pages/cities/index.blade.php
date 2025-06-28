@@ -56,13 +56,13 @@
                                                         <form action="{{ route('cities.destroy', $city->id) }}" 
                                                               method="POST" 
                                                               style="display:inline;" 
-                                                              class="d-inline">
+                                                              class="d-inline delete-form">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" 
-                                                                    class="btn btn-sm btn-outline-danger" 
+                                                            <button type="button" 
+                                                                    class="btn btn-sm btn-outline-danger delete-btn" 
                                                                     title="{{ __('Delete') }}"
-                                                                    onclick="return confirm('هل أنت متأكد من رغبتك في حذف هذه المدينة؟')">
+                                                                    data-city-name="{{ $city->name }}">
                                                                 <i class="fa fa-trash"></i>
                                                             </button>
                                                         </form>
@@ -87,3 +87,4 @@
         </div>
     </div>
 @endsection
+
