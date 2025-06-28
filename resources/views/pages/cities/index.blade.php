@@ -29,7 +29,8 @@
                                 @forelse ($cities as $city)
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
-                                        <td> <i class="flag-icon flag-icon-{{ strtolower($city->state->country->iso_code) }}"></i>
+                                        <td> <i
+                                                class="flag-icon flag-icon-{{ strtolower($city->state->country->iso_code) }}"></i>
                                             {{ $city->name }}</td>
                                         <td>{{ $city->state->name ?? __('Not Found') }}</td>
 
@@ -37,34 +38,29 @@
                                             <td class="text-center align-middle border-1">
                                                 <div class="d-flex gap-1 justify-content-center align-items-center">
                                                     @can('show-city')
-                                                        <a href="{{ route('cities.show', $city->id) }}" 
-                                                           class="btn btn-sm btn-outline-primary" 
-                                                           title="{{ __('Details') }}">
+                                                        <a href="{{ route('cities.show', $city->id) }}"
+                                                            class="btn btn-sm btn-outline-primary" title="{{ __('Details') }}">
                                                             <i class="fa fa-eye"></i>
                                                         </a>
                                                     @endcan
-                                                    
+
                                                     @can('edit-city')
-                                                        <a href="{{ route('cities.edit', $city->id) }}" 
-                                                           class="btn btn-sm btn-outline-warning" 
-                                                           title="{{ __('Edit') }}">
+                                                        <a href="{{ route('cities.edit', $city->id) }}"
+                                                            class="btn btn-sm btn-outline-warning" title="{{ __('Edit') }}">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
                                                     @endcan
-                                                    
+
                                                     @can('delete-city')
-                                                        <form action="{{ route('cities.destroy', $city->id) }}" 
-                                                              method="POST" 
-                                                              style="display:inline;" 
-                                                              class="d-inline delete-form">
+                                                        <form action="{{ route('cities.destroy', $city->id) }}" method="POST"
+                                                            style="display:inline;" class="d-inline delete-form">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="button" 
-                                                                    class="btn btn-sm btn-outline-danger delete-btn" 
-                                                                    title="{{ __('Delete') }}"
-                                                                    data-city-name="{{ $city->name }}">
-                                                                <i class="fa fa-trash"></i>
-                                                            </button>
+
+                                                            <button class="btn btn-sm btn-outline-danger delete-btn sweet-5"
+                                                                title="{{ __('Delete') }}" type="button"><i
+                                                                    class="fa fa-trash"></i></button>
+
                                                         </form>
                                                     @endcan
                                                 </div>
@@ -87,4 +83,3 @@
         </div>
     </div>
 @endsection
-
