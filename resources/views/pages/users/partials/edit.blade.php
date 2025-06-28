@@ -57,6 +57,27 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label class="form-label"><strong>{{ __('Status') }}:</strong></label>
+                            <div class="media">
+                                <label class="col-form-label m-r-10">{{ $user->is_active ? __('Active') : __('Inactive') }}</label>
+                                <div class="media-body text-start switch-bg icon-state">
+                                    <form action="{{ route('users.toggle-status', $user->id) }}"
+                                        method="POST" style="display: inline;">
+                                        @csrf
+                                        @method('PATCH')
+                                        <label class="switch">
+                                            <input class="status-toggle" type="checkbox"
+                                                {{ $user->is_active ? 'checked' : '' }}
+                                                onchange="this.form.submit()">
+                                            <span class="switch-state"></span>
+                                        </label>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-footer text-end">
                     <button class="btn btn-primary" type="submit">{{ __('Update') }}</button>

@@ -46,6 +46,33 @@
                         <p>{{ $user->updated_at->format('Y-m-d H:i A') }}</p>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label"><strong>{{ __('Status') }}:</strong></label>
+                        <div class="media">
+                            <label class="col-form-label m-r-10">{{ $user->is_active ? __('Active') : __('Inactive') }}</label>
+                            <div class="media-body text-start switch-bg icon-state">
+                                @can('edit-user')
+                                <form action="{{ route('users.toggle-status', $user->id) }}"
+                                    method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <label class="switch">
+                                        <input class="status-toggle" type="checkbox"
+                                            {{ $user->is_active ? 'checked' : '' }}
+                                            onchange="this.form.submit()">
+                                        <span class="switch-state"></span>
+                                    </label>
+                                </form>
+                                @else
+                                <span class="badge {{ $user->is_active ? 'badge-success' : 'badge-secondary' }}">
+                                    {{ $user->is_active ? __('Active') : __('Inactive') }}
+                                </span>
+                                @endcan
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-footer text-end">

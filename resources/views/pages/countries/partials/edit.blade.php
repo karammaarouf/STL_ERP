@@ -25,8 +25,14 @@
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label class="form-label" for="iso_code">{{ __('Country Code (3 characters)') }}</label>
-                            <input class="form-control @error('iso_code') is-invalid @enderror" type="text" id="iso_code" name="iso_code" value="{{ old('iso_code', $country->iso_code) }}" maxlength="3" required>
+                            <label class="form-label" for="iso_code">{{ __('Country Code (2 characters)') }}</label>
+                            <div class="input-group">
+                                <input class="form-control @error('iso_code') is-invalid @enderror" type="text" id="iso_code" name="iso_code" value="{{ old('iso_code', $country->iso_code) }}" maxlength="3" required>
+                                <span class="input-group-text" id="flag-display" style="min-width: 60px; justify-content: center;">
+                                    <img id="country-flag" src="" alt="" style="width: 32px; height: 24px; display: none; border-radius: 3px;">
+                                    <span id="flag-placeholder" class="text-muted">🏳️</span>
+                                </span>
+                            </div>
                             @error('iso_code')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -44,3 +50,46 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    const isoCodeInput = $('#iso_code');
+    const countryFlag = $('#country-flag');
+    const flagPlaceholder = $('#flag-placeholder');
+    
+    // Function to update flag display
+    function updateFlag(isoCode) {
+        if (isoCode && isoCode.length >= 2) {
+            const flagUrl = `https://flagcdn.com/32x24/${isoCode.toLowerCase()}.png`;
+            
+            // Test if flag exists
+            const img = new Image();
+            img.onload = function() {
+                countryFlag.attr('src', flagUrl);
+                countryFlag.attr('alt', `${isoCode.toUpperCase()} Flag`);
+                countryFlag.show();
+                flagPlaceholder.hide();
+            };
+            img.onerror = function() {
+                countryFlag.hide();
+                flagPlaceholder.show();
+            };
+            img.src = flagUrl;
+        } else {
+            countryFlag.hide();
+            flagPlaceholder.show();
+        }
+    }
+    
+    // Update flag on input
+    isoCodeInput.on('input', function() {
+        const value = $(this).val().trim();
+        updateFlag(value);
+    });
+    
+    // Initial load for edit form
+    updateFlag(isoCodeInput.val());
+});
+</script>
+@endpush
