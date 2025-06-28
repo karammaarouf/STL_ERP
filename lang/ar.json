@@ -159,5 +159,16 @@
     "Are you sure you want to delete this zone?": "هل أنت متأكد من رغبتك في حذف هذه المنطقة؟",
     "Warehouse zone created successfully.": "تم إنشاء منطقة المستودع بنجاح.",
     "Warehouse zone updated successfully.": "تم تحديث منطقة المستودع بنجاح.",
-    "Warehouse zone deleted successfully.": "تم حذف منطقة المستودع بنجاح."
+    "Warehouse zone deleted successfully.": "تم حذف منطقة المستودع بنجاح.",
+    "Profile": "الملف الشخصي",
+    "Profile Information": "معلومات الملف الشخصي",
+    "Update Password": "تحديث كلمة المرور",
+    "Current Password": "كلمة المرور الحالية",
+    "New Password": "كلمة المرور الجديدة",
+    "Save Changes": "حفظ التغييرات",
+    "Profile updated successfully": "تم تحديث الملف الشخصي بنجاح",
+    "Password updated successfully": "تم تحديث كلمة المرور بنجاح",
+    "validation.current_password": "كلمة المرور الحالية غير صحيحة",
+    "validation.min.string": "يجب أن تكون كلمة المرور على الأقل 8 أحرف",
+    "validation.confirmed": "كلمة المرور غير متطابقة"
 }
