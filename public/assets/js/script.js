@@ -259,7 +259,7 @@ $('.bg-img-cover').each(function () {
 
 
 /*----------------------------------------
-passward show hide
+passward show hidde
 ----------------------------------------*/
 $('.show-hide').show();
 $('.show-hide span').removeClass('show'); // إزالة class show في البداية

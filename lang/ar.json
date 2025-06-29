@@ -191,5 +191,7 @@
     "Your account has been deactivated. Please contact administrator.": "تم تعطيل حسابك. يرجى الاتصال بالمدير.",
     "User has been activated": "تم تفعيل المستخدم",
     "User has been deactivated": "تم إلغاء تفعيل المستخدم",
-    "Country Code (ISO)": "رمز الدولة (ISO) من حرفين"
+    "Country Code (ISO)": "رمز الدولة (ISO) من حرفين",
+    "auth.failed": "بيانات الدخول غير صالحة",
+    "Welcome Back ": "مرحبًا بعودتك "
 }
