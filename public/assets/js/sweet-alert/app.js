@@ -22,7 +22,13 @@ var SweetAlert_custom = {
                             button.closest("form").submit();
                         });
                     } else {
-                        swal("تم إلغاء العملية بأمان!");
+                        swal("تم إلغاء العملية بأمان!",
+                            {
+                                buttons: {
+                                    confirm: "موافق",
+                                }
+                            }
+                        );
                     }
                 });
             });
