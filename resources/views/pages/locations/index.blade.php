@@ -252,6 +252,22 @@
                 fetchStates(item.dataset.id);
             });
 
+            citiesColumn.addEventListener('click', function(event) {
+                const item = event.target.closest('.city-item');
+                if (!item) return;
+
+                // إذا تم النقر على زر التعديل، انتقل إلى رابط التعديل
+                if (event.target.closest('.edit-icon-btn')) {
+                    event.preventDefault();
+                    window.location.href = event.target.closest('.edit-icon-btn').dataset.editUrl;
+                    return;
+                }
+
+                event.preventDefault();
+                citiesColumn.querySelectorAll('.city-item').forEach(el => el.classList.remove('active'));
+                item.classList.add('active');
+            });
+
             statesColumn.addEventListener('click', function(event) {
                 const item = event.target.closest('.state-item');
                 if (!item) return;
