@@ -78,6 +78,8 @@
                             <li><a href="{{ route('warehouse-zones.index') }}">{{ __('Warehouse Zones') }}</a></li>
                             <li><a href="{{ route('warehouse-sections.index') }}">{{ __('Warehouse Sections') }}</a></li>
                             <li><a href="{{ route('warehouse-racks.index') }}">{{ __('Warehouse Racks') }}</a></li>
+                            <li><a href="{{ route('warehouse-slots.index') }}">{{ __('Warehouse Slots') }}</a></li>
+                            
                         </ul>
                     </li>
 
