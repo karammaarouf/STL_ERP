@@ -1,30 +1,34 @@
 var SweetAlert_custom = {
-    init: function() {
-        document.querySelectorAll('.sweet-5').forEach(button => {
-            button.addEventListener('click', function () {
+    init: function () {
+        document.querySelectorAll(".sweet-5").forEach((button) => {
+            button.addEventListener("click", function () {
                 swal({
-                    title: "Are you sure?",
-                    text: "Once deleted, you will not be able to recover this imaginary file!",
+                    title: "هل أنت متأكد؟",
+                    text: "لن تتمكن من التراجع عن هذا الأمر لاحقاً!",
                     icon: "warning",
-                    buttons: true,
+                    buttons: {
+                        cancel: "إلغاء",
+                        confirm: "تأكيد",
+                    },
                     dangerMode: true,
-                })
-                .then((willDelete) => {
+                }).then((willDelete) => {
                     if (willDelete) {
-                        
-                        swal("Poof! Your imaginary file has been deleted!", {
+                        swal("تمت العملية بنجاح!", {
                             icon: "success",
+                            buttons: {
+                                confirm: "موافق",
+                            },
                         }).then(() => {
-                            button.closest('form').submit();
+                            button.closest("form").submit();
                         });
                     } else {
-                        swal("Your imaginary file is safe!");
+                        swal("تم إلغاء العملية بأمان!");
                     }
-                })
+                });
             });
         });
-    }
+    },
 };
-(function($) {
-    SweetAlert_custom.init()
+(function ($) {
+    SweetAlert_custom.init();
 })(jQuery);
