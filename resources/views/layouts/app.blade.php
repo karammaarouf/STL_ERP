@@ -31,7 +31,11 @@
             </div>
         </div>
     </div>
+        @yield('plus-code')
+
     @include('layouts.partials.scripts')
+
+
 </body>
 
 </html>

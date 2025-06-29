@@ -46,17 +46,24 @@ class CityController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCityRequest $request)
-    {
-        if (!auth()->user()->can('create-city')) {
-            abort(403, 'Unauthorized action.');
-        }
+ // في ملف Controller الخاص بالمدن (مثلاً CityController.php)
 
-        $this->cityService->createCity($request->validated());
 
-        return redirect()->route('cities.index')
-            ->with('success', __('City created successfully.'));
+public function store(StoreCityRequest $request)
+{
+    if (!auth()->user()->can('create-city')) {
+        abort(403, 'Unauthorized action.');
     }
+
+    $city = $this->cityService->createCity($request->validated());
+
+    if ($request->wantsJson()) {
+        return response()->json($city, 201); 
+    }
+
+    return redirect()->route('cities.index')
+        ->with('success', __('City created successfully.'));
+}
 
     /**
      * Display the specified resource.

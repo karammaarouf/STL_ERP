@@ -35,11 +35,24 @@ class CountryController extends Controller
         return view('pages.countries.partials.create');
     }
 
-    public function store(StoreCountryRequest $request)
-    {
-        $this->countryService->createCountry($request->validated());
-        return redirect()->route('countries.index')->with('success', __('Country created successfully.'));
+  // في ملف CountryController.php
+
+
+public function store(StoreCountryRequest $request)
+{
+    if (!auth()->user()->can('create-country')) {
+        abort(403, 'Unauthorized action.');
     }
+
+    $country = $this->countryService->createCountry($request->validated());
+
+    if ($request->wantsJson()) {
+        return response()->json($country, 201);
+    }
+
+    return redirect()->route('countries.index')
+        ->with('success', __('Country created successfully.'));
+}
 
     public function show(Country $country)
     {

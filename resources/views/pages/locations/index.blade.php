@@ -4,7 +4,7 @@
 
 @push('styles')
     <style>
-        /* --- تم إبقاء نفس التنسيقات --- */
+        /* --- التنسيقات تبقى كما هي --- */
         .locations-container {
             display: flex;
             gap: 1rem;
@@ -51,7 +51,7 @@
 
         .location-column .list-group-item.active {
             background-color: rgb(36, 105, 92);
-            border-color: rgb(36, 105, 92)
+            border-color: rgb(36, 105, 92);
         }
 
         .location-column .list-group-item.active .btn {
@@ -73,6 +73,11 @@
             border: none;
             padding: 0.2rem 0.5rem;
         }
+
+        /* لإظهار رسائل الخطأ بشكل صحيح */
+        .form-control.is-invalid~.invalid-feedback {
+            display: block;
+        }
     </style>
 @endpush
 
@@ -84,13 +89,15 @@
             </div>
             <div class="card-body">
                 <div class="locations-container">
-                    <!-- عمود البلدان -->
                     <div id="countries-column" class="location-column">
                         <div class="column-header">
                             <span>{{ __('Countries') }}</span>
                             @can('create-country')
-                                <a href="{{ route('countries.create') }}" class="btn btn-sm btn-primary"><i
-                                        class="fa fa-plus"></i></a>
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#locationModal" data-action="create-country"
+                                    data-title="{{ __('Add New Country') }}" data-url="{{ route('countries.store') }}">
+                                    <i class="fa fa-plus"></i>
+                                </button>
                             @endcan
                         </div>
                         <div class="column-search">
@@ -100,8 +107,8 @@
                         <div class="column-body list-group list-group-flush">
                             @foreach ($countries as $country)
                                 <a href="#" class="list-group-item country-item" data-id="{{ $country->id }}">
-                                    <span> <i
-                                            class="flag-icon flag-icon-{{ strtolower($country->iso_code) }}"></i>{{ $country->name }}</span>
+                                    <span> <i class="flag-icon flag-icon-{{ strtolower($country->iso_code) }}"></i>
+                                        {{ $country->name }}</span>
                                     @can('edit-country')
                                         <button class="btn btn-sm btn-outline-secondary edit-icon-btn"
                                             data-edit-url="{{ route('countries.edit', $country->id) }}">
@@ -113,13 +120,15 @@
                         </div>
                     </div>
 
-                    <!-- عمود المحافظات -->
                     <div id="states-column" class="location-column">
                         <div class="column-header">
                             <span>{{ __('States') }}</span>
-                            @can('create-city')
-                                <a href="#" id="add-state-btn" class="btn btn-sm btn-primary d-none"><i
-                                        class="fa fa-plus"></i></a>
+                            @can('create-state')
+                                <button type="button" id="add-state-btn" class="btn btn-sm btn-primary d-none"
+                                    data-bs-toggle="modal" data-bs-target="#locationModal" data-action="create-state"
+                                    data-title="{{ __('Add New State') }}" data-url="{{ route('states.store') }}">
+                                    <i class="fa fa-plus"></i>
+                                </button>
                             @endcan
                         </div>
                         <div class="column-search">
@@ -131,13 +140,15 @@
                         </div>
                     </div>
 
-                    <!-- عمود المدن -->
                     <div id="cities-column" class="location-column">
                         <div class="column-header">
                             <span>{{ __('Cities') }}</span>
                             @can('create-city')
-                                <a href="#" id="add-city-btn" class="btn btn-sm btn-primary d-none"><i
-                                        class="fa fa-plus"></i></a>
+                                <button type="button" id="add-city-btn" class="btn btn-sm btn-primary d-none"
+                                    data-bs-toggle="modal" data-bs-target="#locationModal" data-action="create-city"
+                                    data-title="{{ __('Add New City') }}" data-url="{{ route('cities.store') }}">
+                                    <i class="fa fa-plus"></i>
+                                </button>
                             @endcan
                         </div>
                         <div class="column-search">
@@ -152,11 +163,27 @@
             </div>
         </div>
     </div>
-@endsection
 
+
+
+@endsection
+@section('plus-code')
+    <div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="locationModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
 @push('scripts')
     <script>
-        // تمرير الصلاحيات من PHP إلى JavaScript للتحقق من جهة العميل
+        // تمرير الصلاحيات للتحقق من جهة العميل
         window.userPermissions = {
             canCreateStates: @json(optional(auth()->user())->can('create-state')),
             canEditStates: @json(optional(auth()->user())->can('edit-state')),
@@ -165,6 +192,9 @@
         };
 
         document.addEventListener('DOMContentLoaded', function() {
+            const locationModalElement = document.getElementById('locationModal');
+            const locationModal = new bootstrap.Modal(locationModalElement);
+
             const countriesColumn = document.getElementById('countries-column');
             const statesColumn = document.getElementById('states-column');
             const citiesColumn = document.getElementById('cities-column');
@@ -172,7 +202,6 @@
             const statesList = document.getElementById('states-list');
             const citiesList = document.getElementById('cities-list');
 
-            // الأزرار قد لا تكون موجودة إذا لم يكن لدى المستخدم صلاحية
             const addStateBtn = document.getElementById('add-state-btn');
             const addCityBtn = document.getElementById('add-city-btn');
 
@@ -183,7 +212,7 @@
             // --- دوال البحث ---
             const filterList = (input, listContainer) => {
                 const filter = input.value.toUpperCase();
-                const items = listContainer.getElementsByTagName('a');
+                const items = listContainer.querySelectorAll('.list-group-item');
                 for (let i = 0; i < items.length; i++) {
                     const txtValue = items[i].textContent || items[i].innerText;
                     if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -199,13 +228,11 @@
             stateSearch.addEventListener('keyup', () => filterList(stateSearch, statesList));
             citySearch.addEventListener('keyup', () => filterList(citySearch, citiesList));
 
-            // --- تفويض الأحداث للنقرات ---
-
+            // --- تفويض الأحداث للنقرات على القوائم ---
             countriesColumn.addEventListener('click', function(event) {
                 const item = event.target.closest('.country-item');
                 if (!item) return;
 
-                // منع الانتقال إذا تم النقر على زر التعديل مباشرةً
                 if (event.target.closest('.edit-icon-btn')) {
                     event.preventDefault();
                     window.location.href = event.target.closest('.edit-icon-btn').dataset.editUrl;
@@ -213,10 +240,14 @@
                 }
 
                 event.preventDefault();
-
                 countriesColumn.querySelectorAll('.country-item').forEach(el => el.classList.remove(
                     'active'));
                 item.classList.add('active');
+
+                if (addStateBtn && window.userPermissions.canCreateStates) {
+                    addStateBtn.classList.remove('d-none');
+                    addStateBtn.dataset.countryId = item.dataset.id;
+                }
 
                 fetchStates(item.dataset.id);
             });
@@ -235,30 +266,152 @@
                 statesColumn.querySelectorAll('.state-item').forEach(el => el.classList.remove('active'));
                 item.classList.add('active');
 
+                if (addCityBtn && window.userPermissions.canCreateCities) {
+                    addCityBtn.classList.remove('d-none');
+                    addCityBtn.dataset.stateId = item.dataset.id;
+                }
+
                 fetchCities(item.dataset.id);
             });
 
-            citiesColumn.addEventListener('click', function(event) {
-                const item = event.target.closest('.city-item');
-                if (!item) return;
+            // --- التعامل مع فتح الـ Modal ---
+            locationModalElement.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const action = button.dataset.action;
+                const title = button.dataset.title;
+                const url = button.dataset.url;
 
-                if (event.target.closest('.edit-icon-btn')) {
-                    event.preventDefault();
-                    window.location.href = event.target.closest('.edit-icon-btn').dataset.editUrl;
+                const modalTitle = locationModalElement.querySelector('.modal-title');
+                const modalBody = locationModalElement.querySelector('.modal-body');
+                modalTitle.textContent = title;
+
+                // بناء الفورم ديناميكيًا
+                let formContent = `<form id="locationForm" action="${url}" method="POST" novalidate>`;
+                formContent += `<div class="mb-3">
+                                  <label for="name" class="form-label">${action === 'create-country' ? '{{ __('Country Name') }}' : (action === 'create-state' ? '{{ __('State Name') }}' : '{{ __('City Name') }}')}</label>
+                                  <input type="text" class="form-control" name="name" id="name" required>
+                                  <div class="invalid-feedback"></div>
+                                </div>`;
+
+                if (action === 'create-country') {
+                    formContent += `<div class="mb-3">
+                                      <label for="iso_code" class="form-label">{{ __('Country Code (ISO)') }}</label>
+                                      <input type="text" class="form-control" name="iso_code" id="iso_code" maxlength="2" required>
+                                      <div class="invalid-feedback"></div>
+                                    </div>`;
                 }
+                if (action === 'create-state') {
+                    formContent +=
+                        `<input type="hidden" name="country_id" value="${button.dataset.countryId}">`;
+                }
+                if (action === 'create-city') {
+                    formContent +=
+                        `<input type="hidden" name="state_id" value="${button.dataset.stateId}">`;
+                }
+
+                formContent += `<div class="modal-footer d-flex justify-content-end">
+                                  <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                                  <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
+                                </div></form>`;
+
+                modalBody.innerHTML = formContent;
+
+                // التعامل مع إرسال الفورم
+                const form = modalBody.querySelector('#locationForm');
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    handleFormSubmission(form, action);
+                });
             });
 
+            // --- دالة معالجة إرسال الفورم ---
+            function handleFormSubmission(form, action) {
+                const submitButton = form.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.innerHTML;
+                submitButton.disabled = true;
+                submitButton.innerHTML =
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> {{ __('Saving...') }}`;
 
-            // --- دوال جلب البيانات ---
+                // إزالة رسائل الخطأ القديمة
+                form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
 
-            function fetchStates(countryId) {
-                // تحديث زر إضافة محافظة (إذا كان موجوداً)
-                if (addStateBtn && window.userPermissions.canCreateStates) {
-                    addStateBtn.href = `{{ url('states/create') }}?country_id=${countryId}`;
-                    addStateBtn.classList.remove('d-none');
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
+                        },
+                        body: formData
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(err => {
+                                throw err;
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        addNewItemToList(action, data);
+                        locationModal.hide();
+                    })
+                    .catch(error => {
+                        if (error.errors) {
+                            Object.keys(error.errors).forEach(key => {
+                                const input = form.querySelector(`[name="${key}"]`);
+                                if (input) {
+                                    input.classList.add('is-invalid');
+                                    const feedback = input.parentElement.querySelector(
+                                        '.invalid-feedback');
+                                    if (feedback) feedback.textContent = error.errors[key][0];
+                                }
+                            });
+                        } else {
+                            console.error('Error:', error);
+                            alert('An unexpected error occurred. Please check the console.');
+                        }
+                    })
+                    .finally(() => {
+                        submitButton.disabled = false;
+                        submitButton.innerHTML = originalButtonText;
+                    });
+            }
+
+            // --- دالة إضافة العنصر الجديد للقائمة ---
+            function addNewItemToList(action, item) {
+                let listContainer, itemClass, itemContent;
+
+                if (action === 'create-country') {
+                    listContainer = countriesColumn.querySelector('.column-body');
+                    itemClass = 'country-item';
+                    itemContent =
+                        `<span> <i class="flag-icon flag-icon-${item.iso_code.toLowerCase()}"></i> ${item.name}</span>`;
+                } else if (action === 'create-state') {
+                    listContainer = statesList;
+                    itemClass = 'state-item';
+                    itemContent = `<span>${item.name}</span>`;
+                } else { // create-city
+                    listContainer = citiesList;
+                    itemClass = 'city-item';
+                    itemContent = `<span>${item.name}</span>`;
                 }
 
-                // مسح الأعمدة اللاحقة
+                const placeholder = listContainer.querySelector('p.text-muted');
+                if (placeholder) placeholder.remove();
+
+                const newItemElement = document.createElement('a');
+                newItemElement.href = '#';
+                newItemElement.className = `list-group-item ${itemClass}`;
+                newItemElement.dataset.id = item.id;
+                newItemElement.innerHTML = itemContent; // لا يحتوي على زر التعديل الآن، يمكن إضافته
+
+                listContainer.appendChild(newItemElement);
+            }
+
+            // --- دوال جلب البيانات ---
+            function fetchStates(countryId) {
                 citiesList.innerHTML =
                     `<p class="text-muted p-3">{{ __('Select a state to see its cities.') }}</p>`;
                 if (addCityBtn) addCityBtn.classList.add('d-none');
@@ -266,27 +419,28 @@
                     `<div class="d-flex justify-content-center p-3"><div class="spinner-border" role="status"><span class="visually-hidden">{{ __('Loading...') }}</span></div></div>`;
 
                 const url = `{{ url('/api/countries') }}/${countryId}/states`;
-
                 fetch(url)
                     .then(response => {
-                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                        if (!response.ok) throw new Error('Network response was not ok');
                         return response.json();
                     })
                     .then(data => {
                         statesList.innerHTML = '';
                         if (data.length > 0) {
                             data.forEach(state => {
+                                // الجزء الجديد لإضافة زر التعديل
                                 let editButtonHtml = '';
                                 if (window.userPermissions.canEditStates) {
-                                    editButtonHtml = `<button class="btn btn-sm btn-outline-secondary edit-icon-btn" data-edit-url="{{ url('states') }}/${state.id}/edit">
-                                                    <i class="fa fa-pencil"></i>
-                                                  </button>`;
+                                    const editUrl = `{{ url('states') }}/${state.id}/edit`;
+                                    editButtonHtml = `<button class="btn btn-sm btn-outline-secondary edit-icon-btn" data-edit-url="${editUrl}">
+                              <i class="fa fa-pencil"></i>
+                          </button>`;
                                 }
-                                statesList.innerHTML += `
-                                <a href="#" class="list-group-item state-item" data-id="${state.id}">
-                                    <span>${state.name}</span>
-                                    ${editButtonHtml}
-                                </a>`;
+
+                                statesList.innerHTML += `<a href="#" class="list-group-item state-item" data-id="${state.id}">
+                                <span>${state.name}</span>
+                                ${editButtonHtml}
+                             </a>`;
                             });
                         } else {
                             statesList.innerHTML =
@@ -296,42 +450,39 @@
                     .catch(error => {
                         console.error('Error fetching states:', error);
                         statesList.innerHTML =
-                            `<p class="text-danger p-3">{{ __('Failed to load states. Check browser console for details.') }}</p>`;
+                            `<p class="text-danger p-3">{{ __('Failed to load states.') }}</p>`;
                     });
             }
 
             function fetchCities(stateId) {
-                // تحديث زر إضافة مدينة (إذا كان موجوداً)
-                if (addCityBtn && window.userPermissions.canCreateCities) {
-                    addCityBtn.href = `{{ url('cities/create') }}?state_id=${stateId}`;
-                    addCityBtn.classList.remove('d-none');
-                }
-
                 citiesList.innerHTML =
                     `<div class="d-flex justify-content-center p-3"><div class="spinner-border" role="status"><span class="visually-hidden">{{ __('Loading...') }}</span></div></div>`;
                 const url = `{{ url('/api/states') }}/${stateId}/cities`;
-
                 fetch(url)
                     .then(response => {
-                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                        if (!response.ok) throw new Error('Network response was not ok');
                         return response.json();
                     })
                     .then(data => {
                         citiesList.innerHTML = '';
                         if (data.length > 0) {
+                            // ...
                             data.forEach(city => {
+                                // الجزء الجديد لإضافة زر التعديل
                                 let editButtonHtml = '';
                                 if (window.userPermissions.canEditCities) {
-                                    editButtonHtml = `<button class="btn btn-sm btn-outline-secondary edit-icon-btn" data-edit-url="{{ url('cities') }}/${city.id}/edit">
-                                                    <i class="fa fa-pencil"></i>
-                                                  </button>`;
+                                    const editUrl = `{{ url('cities') }}/${city.id}/edit`;
+                                    editButtonHtml = `<button class="btn btn-sm btn-outline-secondary edit-icon-btn" data-edit-url="${editUrl}">
+                              <i class="fa fa-pencil"></i>
+                          </button>`;
                                 }
-                                citiesList.innerHTML += `
-                                <a href="#" class="list-group-item city-item" data-id="${city.id}">
-                                    <span>${city.name}</span>
-                                    ${editButtonHtml}
-                                </a>`;
+
+                                citiesList.innerHTML += `<a href="#" class="list-group-item city-item" data-id="${city.id}">
+                                <span>${city.name}</span>
+                                ${editButtonHtml}
+                             </a>`;
                             });
+
                         } else {
                             citiesList.innerHTML =
                                 `<p class="text-muted p-3">{{ __('No cities found for this state.') }}</p>`;
@@ -340,7 +491,7 @@
                     .catch(error => {
                         console.error('Error fetching cities:', error);
                         citiesList.innerHTML =
-                            `<p class="text-danger p-3">{{ __('Failed to load cities. Check browser console for details.') }}</p>`;
+                            `<p class="text-danger p-3">{{ __('Failed to load cities.') }}</p>`;
                     });
             }
         });
