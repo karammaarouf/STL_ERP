@@ -216,6 +216,27 @@
     "Are you sure you want to delete this rack?": "هل أنت متأكد من رغبتك في حذف هذا الرف؟",
     "Warehouse rack created successfully.": "تم إنشاء رف المستودع بنجاح.",
     "Warehouse rack updated successfully.": "تم تحديث رف المستودع بنجاح.",
-    "Warehouse rack deleted successfully.": "تم حذف رف المستودع بنجاح."
+
+    "Warehouse Slots": "فتحات المستودعات",
+    "Warehouse Slot List": "قائمة فتحات المستودعات",
+    "Add New Slot": "إضافة فتحة جديدة",
+    "Edit Slot": "تعديل الفتحة",
+    "Slot Code": "كود الفتحة",
+    "Slot Details": "تفاصيل الفتحة",
+    "Select Rack": "اختر الرف",
+    "Belongs to Rack": "تابع للرف",
+    "Max Weight (kg)": "الحد الأقصى للوزن (كيلو)",
+    "Max Volume (m³)": "الحد الأقصى للحجم (متر مكعب)",
+    "Current Weight (kg)": "الوزن الحالي (كيلو)",
+    "Current Volume (m³)": "الحجم الحالي (متر مكعب)",
+    "Max Weight": "الحد الأقصى للوزن",
+    "Max Volume": "الحد الأقصى للحجم",
+    "Current Weight": "الوزن الحالي",
+    "Current Volume": "الحجم الحالي",
+    "Are you sure you want to delete this slot?": "هل أنت متأكد من رغبتك في حذف هذه الفتحة؟",
+    "Warehouse slot created successfully.": "تم إنشاء فتحة المستودع بنجاح.",
+    "Warehouse slot updated successfully.": "تم تحديث فتحة المستودع بنجاح.",
+    "Warehouse slot deleted successfully.": "تم حذف فتحة المستودع بنجاح."
 }
+
 
