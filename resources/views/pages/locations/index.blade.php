@@ -229,13 +229,21 @@
             citySearch.addEventListener('keyup', () => filterList(citySearch, citiesList));
 
             // --- تفويض الأحداث للنقرات على القوائم ---
-            countriesColumn.addEventListener('click', function(event) {
+            contriesColumn.addEventListener('click', function(event) {
                 const item = event.target.closest('.country-item');
                 if (!item) return;
 
                 if (event.target.closest('.edit-icon-btn')) {
                     event.preventDefault();
-                    window.location.href = event.target.closest('.edit-icon-btn').dataset.editUrl;
+                    event.stopPropagation();
+                    // فتح النافذة المنبثقة للتعديل
+                    const editBtn = event.target.closest('.edit-icon-btn');
+                    const countryId = item.dataset.id;
+                    const countryName = item.querySelector('span').textContent.trim();
+                    openEditModal('edit-country', 'تعديل الدولة', editBtn.dataset.editUrl, {
+                        id: countryId,
+                        name: countryName
+                    });
                     return;
                 }
 
@@ -256,7 +264,6 @@
                 const item = event.target.closest('.city-item');
                 if (!item) return;
 
-                // إذا تم النقر على زر التعديل، انتقل إلى رابط التعديل
                 if (event.target.closest('.edit-icon-btn')) {
                     event.preventDefault();
                     window.location.href = event.target.closest('.edit-icon-btn').dataset.editUrl;
@@ -301,21 +308,40 @@
                 const modalBody = locationModalElement.querySelector('.modal-body');
                 modalTitle.textContent = title;
 
-                // بناء الفورم ديناميكيًا
+                // بناء الفورم ديناميًا
                 let formContent = `<form id="locationForm" action="${url}" method="POST" novalidate>`;
-                formContent += `<div class="mb-3">
-                                  <label for="name" class="form-label">${action === 'create-country' ? '{{ __('Country Name') }}' : (action === 'create-state' ? '{{ __('State Name') }}' : '{{ __('City Name') }}')}</label>
-                                  <input type="text" class="form-control" name="name" id="name" required>
-                                  <div class="invalid-feedback"></div>
-                                </div>`;
-
+                
                 if (action === 'create-country') {
-                    formContent += `<div class="mb-3">
-                                      <label for="iso_code" class="form-label">{{ __('Country Code (ISO)') }}</label>
-                                      <input type="text" class="form-control" name="iso_code" id="iso_code" maxlength="2" required>
+                    formContent += `<div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="name">{{ __('Country Name') }}</label>
+                                                <input class="form-control" type="text" id="name" name="name" required>
+                                                <div class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="iso_code">{{ __('Country Code (2 characters)') }}</label>
+                                                <div class="input-group">
+                                                    <input class="form-control" type="text" id="iso_code" name="iso_code" maxlength="2" required>
+                                                    <span class="input-group-text" id="flag-display" style="min-width: 60px; justify-content: center;">
+                                                        <img id="country-flag" src="" alt="" style="width: 32px; height: 24px; display: none; border-radius: 3px;">
+                                                        <span id="flag-placeholder" class="text-muted">🏳️</span>
+                                                    </span>
+                                                </div>
+                                                <div class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                } else {
+                     formContent += `<div class="mb-3">
+                                      <label for="name" class="form-label">${action === 'create-state' ? '{{ __('State Name') }}' : '{{ __('City Name') }}'}</label>
+                                      <input type="text" class="form-control" name="name" id="name" required>
                                       <div class="invalid-feedback"></div>
                                     </div>`;
                 }
+
                 if (action === 'create-state') {
                     formContent +=
                         `<input type="hidden" name="country_id" value="${button.dataset.countryId}">`;
@@ -331,6 +357,46 @@
                                 </div></form>`;
 
                 modalBody.innerHTML = formContent;
+
+                // إضافة وظيفة عرض أيقونة العلم للدول
+                if (action === 'create-country') {
+                    const isoCodeInput = document.getElementById('iso_code');
+                    const countryFlag = document.getElementById('country-flag');
+                    const flagPlaceholder = document.getElementById('flag-placeholder');
+                    
+                    // Function to update flag display
+                    function updateFlag(isoCode) {
+                        if (isoCode && isoCode.length >= 2) {
+                            const flagUrl = `https://flagcdn.com/32x24/${isoCode.toLowerCase()}.png`;
+                            
+                            // Test if flag exists
+                            const img = new Image();
+                            img.onload = function() {
+                                countryFlag.src = flagUrl;
+                                countryFlag.alt = `${isoCode.toUpperCase()} Flag`;
+                                countryFlag.style.display = 'block';
+                                flagPlaceholder.style.display = 'none';
+                            };
+                            img.onerror = function() {
+                                countryFlag.style.display = 'none';
+                                flagPlaceholder.style.display = 'block';
+                            };
+                            img.src = flagUrl;
+                        } else {
+                            countryFlag.style.display = 'none';
+                            flagPlaceholder.style.display = 'block';
+                        }
+                    }
+                    
+                    // Update flag on input
+                    isoCodeInput.addEventListener('input', function() {
+                        const value = this.value.trim();
+                        updateFlag(value);
+                    });
+                    
+                    // Initial load
+                    updateFlag(isoCodeInput.value);
+                }
 
                 // التعامل مع إرسال الفورم
                 const form = modalBody.querySelector('#locationForm');

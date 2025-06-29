@@ -54,12 +54,9 @@
                                                             method="POST" style="display:inline;" class="d-inline delete-form">
                                                             @csrf
                                                             @method('DELETE')
-                                                            {{-- <button type="button" class="btn btn-sm btn-outline-danger delete-btn"
-                                                                title="{{ __('Delete') }}"
-                                                                data-country-name="{{ $country->name }}">
-                                                                <i class="fa fa-trash"></i>
-                                                            </button> --}}
-                                                                                                              <button class="btn btn-sm btn-outline-danger delete-btn sweet-5" title="{{ __('Delete') }}" type="button"><i class="fa fa-trash"></i></button>
+                                                            <button class="btn btn-sm btn-outline-danger delete-btn sweet-5"
+                                                                title="{{ __('Delete') }}" type="button"><i
+                                                                    class="fa fa-trash"></i></button>
 
                                                         </form>
                                                     @endcan
