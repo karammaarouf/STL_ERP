@@ -229,7 +229,7 @@
             citySearch.addEventListener('keyup', () => filterList(citySearch, citiesList));
 
             // --- تفويض الأحداث للنقرات على القوائم ---
-            contriesColumn.addEventListener('click', function(event) {
+            countriesColumn.addEventListener('click', function(event) {
                 const item = event.target.closest('.country-item');
                 if (!item) return;
 
