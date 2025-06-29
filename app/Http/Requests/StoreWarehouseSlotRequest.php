@@ -6,23 +6,20 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreWarehouseSlotRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->can('create-warehouse-slot');
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'code' => 'required|string|max:50|unique:warehouse_slots,code',
+            'rack_id' => 'required|exists:warehouse_racks,id',
+            'max_weight' => 'required|numeric|min:0',
+            'max_volume' => 'required|numeric|min:0',
+            'current_weight' => 'nullable|numeric|min:0',
+            'current_volume' => 'nullable|numeric|min:0',
         ];
     }
 }
