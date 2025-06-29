@@ -9,6 +9,7 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\WarehouseZoneController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WarehouseSectionController;
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', function () {
@@ -29,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/locations', [LocationController::class, 'index'])->name('locations.index');
     Route::resource('warehouses', WarehouseController::class);
     Route::resource('warehouse-zones', WarehouseZoneController::class);
+    Route::resource('warehouse-sections', WarehouseSectionController::class);
     
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -37,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])
         ->name('users.toggle-status')
         ->middleware('can:edit-user');
+    
 });
 
 require __DIR__ . '/auth.php';

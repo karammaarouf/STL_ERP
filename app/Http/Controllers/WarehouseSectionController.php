@@ -2,18 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use App\Models\WarehouseZone;
 use App\Models\WarehouseSection;
+use App\Services\WarehouseSectionService;
 use App\Http\Requests\StoreWarehouseSectionRequest;
 use App\Http\Requests\UpdateWarehouseSectionRequest;
 
 class WarehouseSectionController extends Controller
 {
+    protected $warehouseSectionService;
+
+    public function __construct(WarehouseSectionService $warehouseSectionService)
+    {
+        $this->warehouseSectionService = $warehouseSectionService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $warehouseSections = $this->warehouseSectionService->getAllWarehouseSections();
+        return view('pages.warehouse_sections.index', compact('warehouseSections'));
     }
 
     /**
@@ -21,7 +32,8 @@ class WarehouseSectionController extends Controller
      */
     public function create()
     {
-        //
+        $zones = WarehouseZone::with('warehouse')->get();
+        return view('pages.warehouse_sections.partials.create', compact('zones'));
     }
 
     /**
@@ -29,7 +41,8 @@ class WarehouseSectionController extends Controller
      */
     public function store(StoreWarehouseSectionRequest $request)
     {
-        //
+        $this->warehouseSectionService->createWarehouseSection($request->validated());
+        return redirect()->route('warehouse-sections.index')->with('success', __('Section created successfully'));
     }
 
     /**
@@ -37,30 +50,30 @@ class WarehouseSectionController extends Controller
      */
     public function show(WarehouseSection $warehouseSection)
     {
-        //
+        $warehouseSection->load('zone.warehouse');
+        return view('pages.warehouse_sections.partials.show', compact('warehouseSection'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(WarehouseSection $warehouseSection)
     {
-        //
+        $warehouseSection->load('zone.warehouse');
+        $zones = WarehouseZone::with('warehouse')->get();
+        return view('pages.warehouse_sections.partials.edit', compact('warehouseSection', 'zones'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateWarehouseSectionRequest $request, WarehouseSection $warehouseSection)
     {
-        //
+        $this->warehouseSectionService->updateWarehouseSection($warehouseSection, $request->validated());
+        return redirect()->route('warehouse-sections.index')->with('success', __('Section updated successfully'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(WarehouseSection $warehouseSection)
     {
-        //
+        try {
+            $this->warehouseSectionService->deleteWarehouseSection($warehouseSection);
+            return redirect()->route('warehouse-sections.index')->with('success', __('Section deleted successfully'));
+        } catch (\Exception $e) {
+            return redirect()->route('warehouse-sections.index')->with('error', __('Cannot delete section'));
+        }
     }
 }
