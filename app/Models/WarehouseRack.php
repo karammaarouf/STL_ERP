@@ -7,6 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class WarehouseRack extends Model
 {
-    /** @use HasFactory<\Database\Factories\WarehouseRackFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'code',
+        'section_id'
+    ];
+
+    public function section()
+    {
+        return $this->belongsTo(WarehouseSection::class);
+    }
 }
+

@@ -204,5 +204,18 @@
     "User has been deactivated": "تم إلغاء تفعيل المستخدم",
     "Country Code (ISO)": "رمز الدولة (ISO) من حرفين",
     "auth.failed": "بيانات الدخول غير صالحة",
-    "Welcome Back ": "مرحبًا بعودتك "
+    "Welcome Back ": "مرحبًا بعودتك ",
+    "Warehouse Racks": "رفوف المستودعات",
+    "Warehouse Rack List": "قائمة رفوف المستودعات",
+    "Add New Rack": "إضافة رف جديد",
+    "Edit Rack": "تعديل الرف",
+    "Rack Code": "كود الرف",
+    "Rack Details": "تفاصيل الرف",
+    "Select Section": "اختر القسم",
+    "Belongs to Section": "تابع للقسم",
+    "Are you sure you want to delete this rack?": "هل أنت متأكد من رغبتك في حذف هذا الرف؟",
+    "Warehouse rack created successfully.": "تم إنشاء رف المستودع بنجاح.",
+    "Warehouse rack updated successfully.": "تم تحديث رف المستودع بنجاح.",
+    "Warehouse rack deleted successfully.": "تم حذف رف المستودع بنجاح."
 }
+
