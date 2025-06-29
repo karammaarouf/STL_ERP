@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
             CitySeeder::class,
             WarehouseSeeder::class,
             WarehouseZoneSeeder::class,
-            WarehouseSectionSeeder::class
+            WarehouseSectionSeeder::class,
+            WarehouseRackSeeder::class,
         ]);
     }
 }

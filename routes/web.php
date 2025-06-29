@@ -10,6 +10,7 @@ use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\WarehouseZoneController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WarehouseSectionController;
+use App\Http\Controllers\WarehouseRackController;
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', function () {
@@ -31,6 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('warehouses', WarehouseController::class);
     Route::resource('warehouse-zones', WarehouseZoneController::class);
     Route::resource('warehouse-sections', WarehouseSectionController::class);
+Route::resource('warehouse-racks', WarehouseRackController::class);
     
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
