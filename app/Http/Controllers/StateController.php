@@ -44,14 +44,25 @@ class StateController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreStateRequest $request)
-    {
-        if (!auth()->user()->can('create-state')) {
-            abort(403);
-        }
-        $this->stateService->createState($request->validated());
-        return redirect()->route('states.index')->with('success', __('State created successfully.'));
+ // في ملف StateController.php
+
+
+public function store(StoreStateRequest $request)
+{
+    // 1. التحقق من صلاحيات المستخدم
+    if (!auth()->user()->can('create-state')) {
+        abort(403, 'Unauthorized action.');
     }
+
+    $state = $this->stateService->createState($request->validated());
+
+    if ($request->wantsJson()) {
+        return response()->json($state, 201); // 201 = Created
+    }
+
+    return redirect()->route('states.index')
+        ->with('success', __('State created successfully.'));
+}
 
     /**
      * Display the specified resource.

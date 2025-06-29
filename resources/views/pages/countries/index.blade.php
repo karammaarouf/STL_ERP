@@ -36,32 +36,27 @@
                                             <td class="text-center align-middle border-1">
                                                 <div class="d-flex gap-1 justify-content-center align-items-center">
                                                     @can('show-country')
-                                                        <a href="{{ route('countries.show', $country->id) }}" 
-                                                           class="btn btn-sm btn-outline-primary" 
-                                                           title="{{ __('Details') }}">
+                                                        <a href="{{ route('countries.show', $country->id) }}"
+                                                            class="btn btn-sm btn-outline-primary" title="{{ __('Details') }}">
                                                             <i class="fa fa-eye"></i>
                                                         </a>
                                                     @endcan
-                                                    
+
                                                     @can('edit-country')
-                                                        <a href="{{ route('countries.edit', $country->id) }}" 
-                                                           class="btn btn-sm btn-outline-warning" 
-                                                           title="{{ __('Edit') }}">
+                                                        <a href="{{ route('countries.edit', $country->id) }}"
+                                                            class="btn btn-sm btn-outline-warning" title="{{ __('Edit') }}">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
                                                     @endcan
-                                                    
+
                                                     @can('delete-country')
-                                                        <form action="{{ route('countries.destroy', $country->id) }}" 
-                                                              method="POST" 
-                                                              style="display:inline;" 
-                                                              class="d-inline delete-form">
+                                                        <form action="{{ route('countries.destroy', $country->id) }}"
+                                                            method="POST" style="display:inline;" class="d-inline delete-form">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="button" 
-                                                                    class="btn btn-sm btn-outline-danger delete-btn" 
-                                                                    title="{{ __('Delete') }}"
-                                                                    data-country-name="{{ $country->name }}">
+                                                            <button type="button" class="btn btn-sm btn-outline-danger delete-btn"
+                                                                title="{{ __('Delete') }}"
+                                                                data-country-name="{{ $country->name }}">
                                                                 <i class="fa fa-trash"></i>
                                                             </button>
                                                         </form>
@@ -85,5 +80,6 @@
             </div>
         </div>
     </div>
-@endsection
 
+
+@endsection
