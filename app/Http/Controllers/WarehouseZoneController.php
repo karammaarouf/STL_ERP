@@ -31,8 +31,7 @@ class WarehouseZoneController extends Controller
         if (!auth()->user()->can('create-warehouse-zone')) {
             abort(403, 'Unauthorized action.');
         }
-        $warehouses = Warehouse::orderBy('name')->get();
-        return view('pages.warehouse_zones.partials.create', compact('warehouses'));
+        return view('pages.warehouse_zones.partials.create');
     }
 
     public function store(StoreWarehouseZoneRequest $request)

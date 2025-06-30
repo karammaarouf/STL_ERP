@@ -24,11 +24,8 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label" for="state_id">{{ __('State') }}</label>
-                            <select name="state_id" id="state_id" class="form-control @error('state_id') is-invalid @enderror" required>
+                            <select name="state_id" id="state_id" class="form-control select2 @error('state_id') is-invalid @enderror" required>
                                 <option value="">{{ __('Select State') }}</option>
-                                @foreach ($states as $state)
-                                    <option value="{{ $state->id }}" {{ old('state_id') == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
-                                @endforeach
                             </select>
                             @error('state_id')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -45,3 +42,58 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        $('#state_id').select2({
+            placeholder: '{{ __('Select State') }}',
+            allowClear: true,
+            ajax: {
+                url: '{{ route("api.states.search") }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        search: params.term || '',
+                        page: params.page || 1
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.data,
+                        pagination: {
+                            more: data.pagination.more
+                        }
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 0
+        });
+
+        // Load initial states
+        $.ajax({
+            url: '{{ route("api.states.search") }}',
+            dataType: 'json',
+            data: { search: '', page: 1 },
+            success: function(data) {
+                if (data.data) {
+                    data.data.forEach(function(item) {
+                        var option = new Option(item.text, item.id, false, false);
+                        $('#state_id').append(option);
+                    });
+                }
+
+                // Set selected value if exists
+                @if(old('state_id'))
+                    var oldValue = {{ old('state_id') }};
+                    $('#state_id').val(oldValue).trigger('change');
+                @endif
+
+                $('#state_id').trigger('change');
+            }
+        });
+    });
+</script>
+@endpush

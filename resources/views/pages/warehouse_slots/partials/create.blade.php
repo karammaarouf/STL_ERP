@@ -19,11 +19,8 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label" for="rack_id">{{ __('Rack') }}</label>
-                        <select name="rack_id" id="rack_id" class="form-control @error('rack_id') is-invalid @enderror" required>
+                        <select name="rack_id" id="rack_id" class="form-control select2 @error('rack_id') is-invalid @enderror" required>
                             <option value="">{{ __('Select Rack') }}</option>
-                            @foreach ($racks as $rack)
-                                <option value="{{ $rack->id }}" {{ old('rack_id') == $rack->id ? 'selected' : '' }}>{{ $rack->code }} ({{ $rack->section->name ?? 'N/A' }} - {{ $rack->section->zone->name ?? 'N/A' }} - {{ $rack->section->zone->warehouse->name ?? 'N/A' }})</option>
-                            @endforeach
                         </select>
                         @error('rack_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
@@ -57,3 +54,70 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+
+<script>
+    $(document).ready(function() {
+        $('#rack_id').select2({
+            ajax: {
+                url: '{{ route("api.racks.search") }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        search: params.term || '',
+                        page: params.page || 1
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.data.map(function(rack) {
+                            return {
+                                id: rack.id,
+                                text: rack.code + ' (' + 
+                                      (rack.section ? rack.section.name : 'N/A') + ' - ' + 
+                                      (rack.section && rack.section.zone ? rack.section.zone.name : 'N/A') + ' - ' + 
+                                      (rack.section && rack.section.zone && rack.section.zone.warehouse ? rack.section.zone.warehouse.name : 'N/A') + ')'
+                            };
+                        }),
+                        pagination: {
+                            more: data.current_page < data.last_page
+                        }
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 0,
+            placeholder: '{{ __('Select Rack') }}'
+        });
+
+        // Load initial racks
+        $.ajax({
+            url: '{{ route("api.racks.search") }}',
+            dataType: 'json',
+            data: { search: '', page: 1 },
+            success: function(data) {
+                var options = data.data.map(function(rack) {
+                    return new Option(
+                        rack.code + ' (' + 
+                        (rack.section ? rack.section.name : 'N/A') + ' - ' + 
+                        (rack.section && rack.section.zone ? rack.section.zone.name : 'N/A') + ' - ' + 
+                        (rack.section && rack.section.zone && rack.section.zone.warehouse ? rack.section.zone.warehouse.name : 'N/A') + ')',
+                        rack.id,
+                        false,
+                        false
+                    );
+                });
+                $('#rack_id').append(options).trigger('change');
+
+                // Set selected value if exists
+                @if(old('rack_id'))
+                    var oldValue = {{ old('rack_id') }};
+                    $('#rack_id').val(oldValue).trigger('change');
+                @endif
+            }
+        });
+    });
+</script>
+@endpush

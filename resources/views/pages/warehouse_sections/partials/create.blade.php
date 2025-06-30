@@ -2,6 +2,7 @@
 
 @section('title', __('Add New Section'))
 
+
 @section('content')
 <div class="col-sm-12">
     <div class="card">
@@ -24,11 +25,8 @@
                     </div>
                     <div class="col-md-12 mb-3">
                         <label class="form-label" for="zone_id">{{ __('Zone') }}</label>
-                        <select name="zone_id" id="zone_id" class="form-control @error('zone_id') is-invalid @enderror" required>
+                        <select name="zone_id" id="zone_id" class="form-control select2 @error('zone_id') is-invalid @enderror" required>
                             <option value="">{{ __('Select Zone') }}</option>
-                            @foreach ($zones as $zone)
-                                <option value="{{ $zone->id }}" {{ old('zone_id') == $zone->id ? 'selected' : '' }}>{{ $zone->name }} ({{ $zone->warehouse->name ?? 'N/A' }})</option>
-                            @endforeach
                         </select>
                         @error('zone_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
@@ -42,3 +40,59 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+
+<script>
+    $(document).ready(function() {
+        $('#zone_id').select2({
+            ajax: {
+                url: '{{ route("api.zones.search") }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        search: params.term || '',
+                        page: params.page || 1
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.data.map(function(zone) {
+                            return {
+                                id: zone.id,
+                                text: zone.name + ' (' + (zone.warehouse ? zone.warehouse.name : 'N/A') + ')'
+                            };
+                        }),
+                        pagination: {
+                            more: data.current_page < data.last_page
+                        }
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 0,
+            placeholder: '{{ __('Select Zone') }}'
+        });
+
+        // Load initial zones
+        $.ajax({
+            url: '{{ route("api.zones.search") }}',
+            dataType: 'json',
+            data: { search: '', page: 1 },
+            success: function(data) {
+                var options = data.data.map(function(zone) {
+                    return new Option(zone.name + ' (' + (zone.warehouse ? zone.warehouse.name : 'N/A') + ')', zone.id, false, false);
+                });
+                $('#zone_id').append(options).trigger('change');
+
+                // Set selected value if exists
+                @if(old('zone_id'))
+                    var oldValue = {{ old('zone_id') }};
+                    $('#zone_id').val(oldValue).trigger('change');
+                @endif
+            }
+        });
+    });
+</script>
+@endpush

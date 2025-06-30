@@ -236,7 +236,28 @@
     "Are you sure you want to delete this slot?": "هل أنت متأكد من رغبتك في حذف هذه الفتحة؟",
     "Warehouse slot created successfully.": "تم إنشاء فتحة المستودع بنجاح.",
     "Warehouse slot updated successfully.": "تم تحديث فتحة المستودع بنجاح.",
-    "Warehouse slot deleted successfully.": "تم حذف فتحة المستودع بنجاح."
+    "Warehouse slot deleted successfully.": "تم حذف فتحة المستودع بنجاح.",
+    "Search for a city...": "ابحث عن مدينة...",
+    "Zone": "المنطقة",
+    "Section": "القسم",
+    "Rack": "الرف",
+    "Slot": "الفتحة",
+    "Warehouse Zone": "منطقة المستودع",
+    "Warehouse Section": "قسم المستودع",
+    "Warehouse Rack": "رف المستودع",
+    "Warehouse Slot": "فتحة المستودع",
+    "Country": "الدولة",
+    "Select Country": "اختر الدولة",
+    "Province Name": "اسم المحافظة",
+    "Add New Province": "إضافة محافظة جديدة",
+    "State": "المحافظة",
+    "Provinces": "المحافظات",
+    "Province": "المحافظة",
+    "Province List": "قائمة المحافظات",
+    "Province Code": "كود المحافظة",
+    "Province Details": "تفاصيل المحافظة",
+    "Province created successfully.": "تم إنشاء المحافظة بنجاح.",
+    "Province updated successfully.": "تم تحديث المحافظة بنجاح."
 }
 
 

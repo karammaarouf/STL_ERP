@@ -34,8 +34,7 @@ class WarehouseSlotController extends Controller
         if (!auth()->user()->can('create-warehouse-slot')) {
             abort(403, 'Unauthorized action.');
         }
-        $racks = WarehouseRack::with(['section.zone.warehouse'])->get();
-        return view('pages.warehouse_slots.partials.create', compact('racks'));
+        return view('pages.warehouse_slots.partials.create');
     }
 
     public function store(StoreWarehouseSlotRequest $request): RedirectResponse

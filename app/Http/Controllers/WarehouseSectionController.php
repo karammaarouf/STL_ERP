@@ -32,8 +32,7 @@ class WarehouseSectionController extends Controller
      */
     public function create()
     {
-        $zones = WarehouseZone::with('warehouse')->get();
-        return view('pages.warehouse_sections.partials.create', compact('zones'));
+        return view('pages.warehouse_sections.partials.create');
     }
 
     /**

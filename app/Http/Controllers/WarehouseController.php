@@ -32,8 +32,7 @@ class WarehouseController extends Controller
         if (!auth()->user()->can('create-warehouse')) {
             abort(403, 'Unauthorized action.');
         }
-        $cities = City::orderBy('name')->get();
-        return view('pages.warehouses.partials.create', compact('cities'));
+        return view('pages.warehouses.partials.create');
     }
 
     public function store(StoreWarehouseRequest $request)
