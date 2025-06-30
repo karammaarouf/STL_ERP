@@ -29,4 +29,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/racks/search', [ApiRackController::class, 'search'])->name('api.racks.search');
     Route::get('/states/search', [ApiStateController::class, 'search'])->name('api.states.search');
     Route::get('/countries/search', [ApiCountryController::class, 'search'])->name('api.countries.search');
+    Route::get('/cities/search', [App\Http\Controllers\Api\CityController::class, 'search'])->name('api.cities.search');
 });

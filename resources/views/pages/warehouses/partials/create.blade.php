@@ -26,10 +26,6 @@
                         <label class="form-label" for="city_id">{{ __('City') }}</label>
                         <select name="city_id" id="city_id" class="form-control select2 @error('city_id') is-invalid @enderror" required>
                             <option value="">{{ __('Select City') }}</option>
-                            @foreach($cities as $city)
-                                <option value="{{ $city->id }}" {{ old('city_id') == $city->id ? 'selected' : '' }}>{{ $city->name }}</option>
-                                
-                            @endforeach
                         </select>
                         @error('city_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
@@ -82,15 +78,8 @@
                 },
                 processResults: function(data) {
                     return {
-                        results: data.data.map(function(city) {
-                            return {
-                                id: city.id,
-                                text: city.name
-                            };
-                        }),
-                        pagination: {
-                            more: data.current_page < data.last_page
-                        }
+                        results: data.data,
+                        pagination: data.pagination
                     };
                 },
                 cache: true
@@ -108,7 +97,7 @@
             success: function(data) {
                 if (data.data.length > 0) {
                     var defaultOptions = data.data.map(function(city) {
-                        return new Option(city.name, city.id, false, false);
+                        return new Option(city.text, city.id, false, false);
                     });
                     $('#city_id').append(defaultOptions).trigger('change');
                 }
