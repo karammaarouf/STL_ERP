@@ -24,10 +24,11 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label" for="city_id">{{ __('City') }}</label>
-                        <select name="city_id" id="city_id" class="form-control @error('city_id') is-invalid @enderror" required>
+                        <select name="city_id" id="city_id" class="form-control select2 @error('city_id') is-invalid @enderror" required>
                             <option value="">{{ __('Select City') }}</option>
-                            @foreach ($cities as $city)
+                            @foreach($cities as $city)
                                 <option value="{{ $city->id }}" {{ old('city_id') == $city->id ? 'selected' : '' }}>{{ $city->name }}</option>
+                                
                             @endforeach
                         </select>
                         @error('city_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
@@ -60,3 +61,59 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        $('#city_id').select2({
+            placeholder: "{{ __('Search for a city...') }}",
+            minimumInputLength: 0,
+            allowClear: true,
+            
+            ajax: {
+                url: '{{ route("api.cities.search") }}',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        search: params.term || '',
+                        page: params.page || 1
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.data.map(function(city) {
+                            return {
+                                id: city.id,
+                                text: city.name
+                            };
+                        }),
+                        pagination: {
+                            more: data.current_page < data.last_page
+                        }
+                    };
+                },
+                cache: true
+            }
+        });
+        
+        // تحميل أول 5 مدن افتراضياً
+        $.ajax({
+            url: '{{ route("api.cities.search") }}',
+            dataType: 'json',
+            data: {
+                search: '',
+                page: 1
+            },
+            success: function(data) {
+                if (data.data.length > 0) {
+                    var defaultOptions = data.data.map(function(city) {
+                        return new Option(city.name, city.id, false, false);
+                    });
+                    $('#city_id').append(defaultOptions).trigger('change');
+                }
+            }
+        });
+    });
+</script>
+@endpush

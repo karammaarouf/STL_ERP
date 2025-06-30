@@ -33,6 +33,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
 
+{{-- للقائمة المنسدلة ذات حقل البحث --}}
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/select2.css') }}">
+
 
 <style>
     *:not(i) {

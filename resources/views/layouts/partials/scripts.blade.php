@@ -46,6 +46,9 @@
 <!-- Theme js-->
 <script src="{{ asset('assets/js/script.js') }}"></script>
 
+{{-- للقوائم المنسدلة ذات حقول البحث --}}
+<script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
+<script src="{{ asset('assets/js/select2/select2-custom.js') }}"></script>
 
 
 {{-- الجافا سكريبت الخاص باظهار رسالة تأكيد بعد ضغط الزر --}}

@@ -26,8 +26,7 @@ class WarehouseRackController extends Controller
 
     public function create()
     {
-        $sections = WarehouseSection::with('zone.warehouse')->get();
-        return view('pages.warehouse_racks.partials.create', compact('sections'));
+        return view('pages.warehouse_racks.partials.create');
     }
 
     public function store(StoreWarehouseRackRequest $request)

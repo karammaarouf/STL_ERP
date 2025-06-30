@@ -37,8 +37,7 @@ class StateController extends Controller
         if (!auth()->user()->can('create-state')) {
             abort(403);
         }
-        $countries = Country::all();
-        return view('pages.states.partials.create', compact('countries'));
+        return view('pages.states.partials.create');
     }
 
     /**
