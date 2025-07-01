@@ -10,15 +10,11 @@ use App\Http\Controllers\Api\SectionController as ApiSectionController;
 use App\Http\Controllers\Api\RackController as ApiRackController;
 use App\Http\Controllers\Api\StateController as ApiStateController;
 use App\Http\Controllers\Api\CountryController as ApiCountryController;
+use App\Http\Controllers\Api\PalletController as ApiPalletController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
-    // Route to get states for a specific country
-
 });
-
-
-
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/countries/{country}/states', [StateController::class, 'getStatesForCountry']);
@@ -30,4 +26,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/states/search', [ApiStateController::class, 'search'])->name('api.states.search');
     Route::get('/countries/search', [ApiCountryController::class, 'search'])->name('api.countries.search');
     Route::get('/cities/search', [App\Http\Controllers\Api\CityController::class, 'search'])->name('api.cities.search');
+    Route::get('/pallets/search', [ApiPalletController::class, 'search'])->name('api.pallets.search');
 });

@@ -261,7 +261,25 @@
     "Zone Code": "كود المنطقة",
     
     "main": "رئيسي",
-    "branch": "فرعي"
+    "branch": "فرعي",
+
+    "Barcode": "الباركود",
+    "Add New Pallet": "إضافة طبلية جديدة",
+    "Empty": "خالية",
+    "Reserved": "محجوزة",
+    "Occupied": "مشغولة",
+    "Pallet List": "قائمة طبليات",
+    "Loaded": "مملوكة",
+    "Pallet Details": "تفاصيل الطبلية",
+    "Pallet Code": "كود الطبلية",
+    "Pallet Type": "نوع الطبلية",
+    "Pallet Type (Weight)": "نوع الطبلية (وزن)",
+    "Edit Pallet": "تعديل الطبلية",
+    "Pallet deleted successfully": "تم حذف الطبلية بنجاح.",
+    "Pallet created successfully": "تم إنشاء الطبلية بنجاح.",
+    "Pallet updated successfully": "تم تحديث الطبلية بنجاح.",
+    "Pallets": "الطبليات"
+
 
 }
 

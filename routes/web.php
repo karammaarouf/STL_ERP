@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WarehouseSectionController;
 use App\Http\Controllers\WarehouseRackController;
 use App\Http\Controllers\WarehouseSlotController;
+use App\Http\Controllers\PalletController;
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', function () {
@@ -37,6 +38,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('warehouse-sections', WarehouseSectionController::class);
     Route::resource('warehouse-racks', WarehouseRackController::class);
     Route::resource('warehouse-slots', WarehouseSlotController::class);
+    Route::resource('pallets', PalletController::class);
 
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -48,7 +50,3 @@ Route::middleware(['auth'])->group(function () {
 });
 
 require __DIR__ . '/auth.php';
-
-
-
-// ... other routes

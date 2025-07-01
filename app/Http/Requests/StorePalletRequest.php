@@ -11,7 +11,7 @@ class StorePalletRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return auth()->user()->can('create-pallet');
     }
 
     /**
@@ -22,7 +22,27 @@ class StorePalletRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'barcode' => ['required', 'string', 'max:255', 'unique:pallets,barcode'],
+            'warehouse_id' => ['required', 'exists:warehouses,id'],
+            'status' => ['required', 'in:empty,loaded,reserved'],
+            'current_weight' => ['required', 'numeric', 'min:0'],
+            'current_volume' => ['required', 'numeric', 'min:0'],
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'barcode' => __('Barcode'),
+            'warehouse_id' => __('Warehouse'),
+            'status' => __('Status'),
+            'current_weight' => __('Current Weight'),
+            'current_volume' => __('Current Volume'),
         ];
     }
 }

@@ -36,4 +36,12 @@ class Warehouse extends Model
     {
         return $this->hasMany(WarehouseZone::class);
     }
+
+    /**
+     * Get the pallets in this warehouse.
+     */
+    public function pallets()
+    {
+        return $this->hasMany(Pallet::class);
+    }
 }

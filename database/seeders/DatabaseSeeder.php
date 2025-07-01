@@ -23,7 +23,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            UserSeeder::class,
             CountrySeeder::class,
             StateSeeder::class,
             CitySeeder::class,
@@ -31,7 +30,9 @@ class DatabaseSeeder extends Seeder
             WarehouseZoneSeeder::class,
             WarehouseSectionSeeder::class,
             WarehouseRackSeeder::class,
-            WarehouseSlotSeeder::class
+            WarehouseSlotSeeder::class,
+            PalletSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }
