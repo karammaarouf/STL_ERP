@@ -16,7 +16,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['web' , 'auth'])->group(function () {
     Route::get('/countries/{country}/states', [StateController::class, 'getStatesForCountry']);
     Route::get('/states/{state}/cities', [CityController::class, 'getCitiesForState']);
     Route::get('/warehouses/search', [ApiWarehouseController::class, 'search'])->name('api.warehouses.search');
