@@ -12,14 +12,7 @@ if (localStorage.getItem("page-wrapper") === null) {
     $(".page-wrapper").addClass("compact-wrapper");
 }
 
-// Close dropdown when clicking outside with smooth animation
-$(document).on('click', function(e) {
-    if (!$(e.target).closest('.main-nav, .toggle-sidebar').length) { // تغيير المستهدفات لضمان عدم إغلاق عند النقر على الشريط الجانبي نفسه
-        $('.menu-content').slideUp(300);
-        $('.menu-title').removeClass('active');
-        $('.menu-title').find('div').replaceWith('<div class="according-menu"><i class="fa fa-angle-right"></i></div>');
-    }
-});
+// Removed the document click handler to prevent closing dropdown when clicking outside
 
 // left sidebar and horizontal menu
 if ($('#pageWrapper').hasClass('compact-wrapper')) {
@@ -332,37 +325,36 @@ function loadActiveMenuState() {
 }
 
 // Save state when menu items are clicked
-// Save state when menu items are clicked
-$('.menu-title').on('click', function() {
-// Clear standalone active states when dropdown is clicked
-$('.nav-menu > li > a').not('.menu-title').removeClass('active');
-setTimeout(saveActiveMenuState, 100);
+$('.menu-title').on('click', function(e) {
+    e.stopPropagation(); // Prevent click from bubbling up
+    // Clear standalone active states when dropdown is clicked
+    $('.nav-menu > li > a').not('.menu-title').removeClass('active');
+    setTimeout(saveActiveMenuState, 100);
 });
 
-$('.nav-submenu a').on('click', function() {
-// Clear all active states
-$('.nav-submenu a').removeClass('active');
-$('.nav-menu > li > a').not('.menu-title').removeClass('active');
-$('.nav-menu > li').not($(this).closest('li')).removeClass('active');
-    
-// Set current submenu item as active
-$(this).addClass('active');
-$(this).closest('li').addClass('active');
-    
-setTimeout(saveActiveMenuState, 100);
+$('.nav-submenu a').on('click', function(e) {
+    e.stopPropagation(); // Prevent click from bubbling up
+    // Clear all active states
+    $('.nav-submenu a').removeClass('active');
+    $('.nav-menu > li > a').not('.menu-title').removeClass('active');
+    $('.nav-menu > li').not($(this).closest('li')).removeClass('active');
+        
+    // Set current submenu item as active
+    $(this).addClass('active');
+    $(this).closest('li').addClass('active');
+        
+    setTimeout(saveActiveMenuState, 100);
 });
 
 // Save state when standalone items are clicked (like Profile)
-$('.nav-menu > li > a').not('.menu-title').on('click', function() {
+$('.nav-menu > li > a').not('.menu-title').on('click', function(e) {
+    e.stopPropagation(); // Prevent click from bubbling up
+    
     // Remove active class from all menu items
     $('.nav-menu > li > a').removeClass('active');
     $('.nav-menu > li').removeClass('active');
     $('.menu-title').removeClass('active');
     $('.nav-submenu a').removeClass('active');
-    
-    // Hide all dropdown menus
-    $('.menu-content').slideUp(300);
-    $('.menu-title').find('div').replaceWith('<div class="according-menu"><i class="fa fa-angle-right"></i></div>');
     
     // Set current item as active
     $(this).addClass('active');

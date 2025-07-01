@@ -20,4 +20,9 @@ class WarehouseSection extends Model
     {
         return $this->belongsTo(WarehouseZone::class, 'zone_id');
     }
+
+    public function racks()
+    {
+        return $this->hasMany(WarehouseRack::class, 'section_id');
+    }
 }

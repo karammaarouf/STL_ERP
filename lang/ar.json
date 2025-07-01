@@ -217,12 +217,12 @@
     "Warehouse rack created successfully.": "تم إنشاء رف المستودع بنجاح.",
     "Warehouse rack updated successfully.": "تم تحديث رف المستودع بنجاح.",
 
-    "Warehouse Slots": "فتحات المستودعات",
-    "Warehouse Slot List": "قائمة فتحات المستودعات",
-    "Add New Slot": "إضافة فتحة جديدة",
-    "Edit Slot": "تعديل الفتحة",
-    "Slot Code": "كود الفتحة",
-    "Slot Details": "تفاصيل الفتحة",
+    "Warehouse Slots": "أقسام رفوف المستودعات",
+    "Warehouse Slot List": "قائمة أقسام رفوف المستودعات",
+    "Add New Slot": "إضافة قسم رف جديدة",
+    "Edit Slot": "تعديل قسم الرف",
+    "Slot Code": "كود قسم الرف",
+    "Slot Details": "تفاصيل قسم الرف",
     "Select Rack": "اختر الرف",
     "Belongs to Rack": "تابع للرف",
     "Max Weight (kg)": "الحد الأقصى للوزن (كيلو)",
@@ -234,18 +234,18 @@
     "Current Weight": "الوزن الحالي",
     "Current Volume": "الحجم الحالي",
     "Are you sure you want to delete this slot?": "هل أنت متأكد من رغبتك في حذف هذه الفتحة؟",
-    "Warehouse slot created successfully.": "تم إنشاء فتحة المستودع بنجاح.",
-    "Warehouse slot updated successfully.": "تم تحديث فتحة المستودع بنجاح.",
-    "Warehouse slot deleted successfully.": "تم حذف فتحة المستودع بنجاح.",
+    "Warehouse slot created successfully.": "تم إنشاء قسم لرف المستودع بنجاح.",
+    "Warehouse slot updated successfully.": "تم تحديث قسم لرف المستودع بنجاح.",
+    "Warehouse slot deleted successfully.": "تم حذف قسم لرف المستودع بنجاح.",
     "Search for a city...": "ابحث عن مدينة...",
     "Zone": "المنطقة",
     "Section": "القسم",
     "Rack": "الرف",
-    "Slot": "الفتحة",
+    "Slot": "قسم رف",
     "Warehouse Zone": "منطقة المستودع",
     "Warehouse Section": "قسم المستودع",
     "Warehouse Rack": "رف المستودع",
-    "Warehouse Slot": "فتحة المستودع",
+    "Warehouse Slot": "قسم رف المستودع",
     "Country": "الدولة",
     "Select Country": "اختر الدولة",
     "Province Name": "اسم المحافظة",
@@ -258,7 +258,11 @@
     "Province Details": "تفاصيل المحافظة",
     "Province created successfully.": "تم إنشاء المحافظة بنجاح.",
     "Province updated successfully.": "تم تحديث المحافظة بنجاح.",
-    "Zone Code": "كود المنطقة"
+    "Zone Code": "كود المنطقة",
+    
+    "main": "رئيسي",
+    "branch": "فرعي"
+
 }
 
 

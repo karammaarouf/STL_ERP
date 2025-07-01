@@ -18,5 +18,10 @@ class WarehouseRack extends Model
     {
         return $this->belongsTo(WarehouseSection::class);
     }
+
+    public function slots()
+    {
+        return $this->hasMany(WarehouseSlot::class, 'rack_id');
+    }
 }
 
