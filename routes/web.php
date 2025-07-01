@@ -38,6 +38,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('warehouse-sections', WarehouseSectionController::class);
     Route::resource('warehouse-racks', WarehouseRackController::class);
     Route::resource('warehouse-slots', WarehouseSlotController::class);
+    
+
     Route::resource('pallets', PalletController::class);
 
     // Profile routes
