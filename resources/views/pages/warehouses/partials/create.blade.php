@@ -69,7 +69,7 @@
             ajax: {
                 url: '{{ route("api.cities.search") }}',
                 dataType: 'json',
-                delay: 250,
+                delay: 500,
                 data: function(params) {
                     return {
                         search: params.term || '',

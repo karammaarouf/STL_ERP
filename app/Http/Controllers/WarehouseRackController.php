@@ -58,7 +58,7 @@ class WarehouseRackController extends Controller
     public function destroy(WarehouseRack $warehouseRack)
     {
         $this->warehouseRackService->deleteRack($warehouseRack);
-        return redirect()->route('warehouse-racks.index')
+        return redirect()->back()
             ->with('success', __('Warehouse rack deleted successfully.'));
     }
 }

@@ -74,6 +74,7 @@
                             <span>{{ __('Warehouse Management') }}</span>
                         </a>
                         <ul class="nav-submenu menu-content">
+                            <li><a href="{{ route('warehouse.management.index') }}">{{ __('Warehouse Management') }}</a></li>
                             <li><a href="{{ route('warehouses.index') }}">{{ __('Warehouse List') }}</a></li>
                             <li><a href="{{ route('warehouse-zones.index') }}">{{ __('Warehouse Zones') }}</a></li>
                             <li><a href="{{ route('warehouse-sections.index') }}">{{ __('Warehouse Sections') }}</a></li>

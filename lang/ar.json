@@ -278,7 +278,14 @@
     "Pallet deleted successfully": "تم حذف الطبلية بنجاح.",
     "Pallet created successfully": "تم إنشاء الطبلية بنجاح.",
     "Pallet updated successfully": "تم تحديث الطبلية بنجاح.",
-    "Pallets": "الطبليات"
+    "Pallets": "الطبليات",
+    "Zones": "المناطق",
+    "Sections": "الأقسام",
+    "Racks": "الرفوف",
+    "Slots": "أقسام الرفوف",
+    "Name": "الاسم",
+    "Actions": "العمليات",
+    "Warehouses Management": "إدارة المستودعات"
 
 
 }

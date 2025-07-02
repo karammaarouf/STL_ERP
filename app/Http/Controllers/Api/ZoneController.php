@@ -21,4 +21,17 @@ class ZoneController extends Controller
             
         return response()->json($zones);
     }
+
+    public function getZonesByWarehouse($warehouseId)
+    {
+        try {
+            $zones = WarehouseZone::where('warehouse_id', $warehouseId)
+                ->orderBy('name')
+                ->get();
+            
+            return response()->json($zones);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch zones'], 500);
+        }
+    }
 }

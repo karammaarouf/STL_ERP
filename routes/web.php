@@ -12,14 +12,17 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WarehouseSectionController;
 use App\Http\Controllers\WarehouseRackController;
 use App\Http\Controllers\WarehouseSlotController;
+use App\Http\Controllers\WarehouseManagementController;
 use App\Http\Controllers\PalletController;
 use App\Http\Controllers\Api\WarehouseController as ApiWarehouseController;
+use App\Http\Controllers\Api\CityController as ApiCityController;
 use App\Http\Controllers\Api\ZoneController as ApiZoneController;
 use App\Http\Controllers\Api\SectionController as ApiSectionController;
 use App\Http\Controllers\Api\RackController as ApiRackController;
 use App\Http\Controllers\Api\StateController as ApiStateController;
 use App\Http\Controllers\Api\CountryController as ApiCountryController;
 use App\Http\Controllers\Api\PalletController as ApiPalletController;
+use App\Http\Controllers\Api\SlotController as ApiSlotController;
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', function () {
@@ -45,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('warehouse-sections', WarehouseSectionController::class);
     Route::resource('warehouse-racks', WarehouseRackController::class);
     Route::resource('warehouse-slots', WarehouseSlotController::class);
-    
+    Route::get('/warehouse-management', [WarehouseManagementController::class, 'index'])->name('warehouse.management.index');
 
     Route::resource('pallets', PalletController::class);
 
@@ -66,8 +69,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/racks/search', [ApiRackController::class, 'search'])->name('api.racks.search');
         Route::get('/states/search', [ApiStateController::class, 'search'])->name('api.states.search');
         Route::get('/countries/search', [ApiCountryController::class, 'search'])->name('api.countries.search');
-        Route::get('/cities/search', [CityController::class, 'search'])->name('api.cities.search');
+        Route::get('/cities/search', [ApiCityController::class, 'search'])->name('api.cities.search');
         Route::get('/pallets/search', [ApiPalletController::class, 'search'])->name('api.pallets.search');
+        
+        // Warehouse hierarchy routes
+        Route::get('/warehouses/{warehouse}/zones', [ApiZoneController::class, 'getZonesByWarehouse'])->name('api.warehouses.zones');
+        Route::get('/zones/{zone}/sections', [ApiSectionController::class, 'getSectionsByZone'])->name('api.zones.sections');
+        Route::get('/sections/{section}/racks', [ApiRackController::class, 'getRacksBySection'])->name('api.sections.racks');
+        Route::get('/racks/{rack}/slots', [ApiSlotController::class, 'getSlotsByRack'])->name('api.racks.slots');
     });
 });
 

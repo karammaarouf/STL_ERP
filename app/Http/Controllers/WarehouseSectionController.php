@@ -70,7 +70,7 @@ class WarehouseSectionController extends Controller
     {
         try {
             $this->warehouseSectionService->deleteWarehouseSection($warehouseSection);
-            return redirect()->route('warehouse-sections.index')->with('success', __('Section deleted successfully'));
+            return redirect()->back()->with('success', __('Section deleted successfully'));
         } catch (\Exception $e) {
             return redirect()->route('warehouse-sections.index')->with('error', __('Cannot delete section'));
         }

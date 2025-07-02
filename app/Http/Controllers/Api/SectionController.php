@@ -21,4 +21,17 @@ class SectionController extends Controller
             
         return response()->json($sections);
     }
+
+    public function getSectionsByZone($zoneId)
+    {
+        try {
+            $sections = WarehouseSection::where('zone_id', $zoneId)
+                ->orderBy('name')
+                ->get();
+            
+            return response()->json($sections);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch sections'], 500);
+        }
+    }
 }

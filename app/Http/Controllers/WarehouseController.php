@@ -76,7 +76,7 @@ class WarehouseController extends Controller
             abort(403, 'Unauthorized action.');
         }
         $this->warehouseService->deleteWarehouse($warehouse);
-        return redirect()->route('warehouses.index')
+        return redirect()->back()
             ->with('success', __('Warehouse deleted successfully.'));
     }
 }

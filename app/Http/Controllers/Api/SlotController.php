@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\WarehouseRack;
+use App\Models\WarehouseSlot;
 use Illuminate\Http\Request;
 
-class RackController extends Controller
+class SlotController extends Controller
 {
     public function search(Request $request)
     {
@@ -14,29 +14,30 @@ class RackController extends Controller
         $page = $request->input('page', 1);
         $perPage = 5;
 
-        $query = WarehouseRack::with(['section.zone.warehouse'])
+        $query = WarehouseSlot::with(['rack.section.zone.warehouse'])
             ->when($search, function ($query) use ($search) {
                 return $query->where(function ($query) use ($search) {
-                    $query->where('code', 'like', "%{$search}%");
+                    $query->where('code', 'like', "%{$search}%")
+                          ->orWhere('position', 'like', "%{$search}%");
                 });
             })
             ->orderBy('code');
 
-        $racks = $query->paginate($perPage);
+        $slots = $query->paginate($perPage);
 
-        return response()->json($racks);
+        return response()->json($slots);
     }
 
-    public function getRacksBySection($sectionId)
+    public function getSlotsByRack($rackId)
     {
         try {
-            $racks = WarehouseRack::where('section_id', $sectionId)
+            $slots = WarehouseSlot::where('rack_id', $rackId)
                 ->orderBy('code')
                 ->get();
             
-            return response()->json($racks);
+            return response()->json($slots);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to fetch racks'], 500);
+            return response()->json(['error' => 'Failed to fetch slots'], 500);
         }
     }
 }

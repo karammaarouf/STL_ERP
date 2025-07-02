@@ -86,7 +86,7 @@ if (!auth()->user()->can('delete-warehouse-slot')) {
 }
         try {
             $this->slotService->deleteSlot($warehouseSlot);
-            return redirect()->route('warehouse-slots.index')
+            return redirect()->back()
                 ->with('success', __('Warehouse slot deleted successfully.'));
         } catch (\Exception $e) {
             return back()->with('error', __('An error occurred while deleting the slot.'));
