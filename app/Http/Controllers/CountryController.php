@@ -15,7 +15,6 @@ class CountryController extends Controller
     public function __construct(CountryService $countryService)
     {
         $this->countryService = $countryService;
-
     }
 
     public function index()
@@ -35,24 +34,24 @@ class CountryController extends Controller
         return view('pages.countries.partials.create');
     }
 
-  // في ملف CountryController.php
+    // في ملف CountryController.php
 
 
-public function store(StoreCountryRequest $request)
-{
-    if (!auth()->user()->can('create-country')) {
-        abort(403, 'Unauthorized action.');
+    public function store(StoreCountryRequest $request)
+    {
+        if (!auth()->user()->can('create-country')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $country = $this->countryService->createCountry($request->validated());
+
+        if ($request->wantsJson()) {
+            return response()->json($country, 201);
+        }
+
+        return redirect()->route('countries.index')
+            ->with('success', __('Country created successfully.'));
     }
-
-    $country = $this->countryService->createCountry($request->validated());
-
-    if ($request->wantsJson()) {
-        return response()->json($country, 201);
-    }
-
-    return redirect()->route('countries.index')
-        ->with('success', __('Country created successfully.'));
-}
 
     public function show(Country $country)
     {
@@ -61,19 +60,27 @@ public function store(StoreCountryRequest $request)
         }
         return view('pages.countries.partials.show', compact('country'));
     }
-
-    public function edit(Country $country)
+    public function edit(Request $request, Country $country)
     {
         if (!auth()->user()->can('edit-country')) {
-            abort(403);
+            abort(403, 'This action is unauthorized.');
         }
+
+        // هنا التصحيح: نستخدم كائن الطلب $request
+        if ($request->wantsJson()) {
+            return response()->json(['model' => $country]);
+        }
+
+        // هذا السطر سيعمل للطلبات العادية من المتصفح
         return view('pages.countries.partials.edit', compact('country'));
     }
 
     public function update(UpdateCountryRequest $request, Country $country)
     {
-
         $this->countryService->updateCountry($country, $request->validated());
+        if ($request->wantsJson()) {
+            return response()->json(['model' => $country]);
+        }
         return redirect()->route('countries.index')->with('success', __('Country updated successfully.'));
     }
 
@@ -82,6 +89,7 @@ public function store(StoreCountryRequest $request)
         if (!auth()->user()->can('delete-country')) {
             abort(403);
         }
+
         $this->countryService->deleteCountry($country);
         return redirect()->route('countries.index')->with('success', __('Country deleted successfully.'));
     }

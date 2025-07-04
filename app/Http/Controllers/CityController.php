@@ -6,6 +6,7 @@ use App\Models\City;
 use App\Models\State;
 use App\Services\CityService;
 use App\Http\Requests\StoreCityRequest;
+use Illuminate\Http\Request;
 use App\Http\Requests\UpdateCityRequest;
 
 class CityController extends Controller
@@ -46,24 +47,24 @@ class CityController extends Controller
     /**
      * Store a newly created resource in storage.
      */
- // في ملف Controller الخاص بالمدن (مثلاً CityController.php)
+    // في ملف Controller الخاص بالمدن (مثلاً CityController.php)
 
 
-public function store(StoreCityRequest $request)
-{
-    if (!auth()->user()->can('create-city')) {
-        abort(403, 'Unauthorized action.');
+    public function store(StoreCityRequest $request)
+    {
+        if (!auth()->user()->can('create-city')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $city = $this->cityService->createCity($request->validated());
+
+        if ($request->wantsJson()) {
+            return response()->json($city, 201);
+        }
+
+        return redirect()->route('cities.index')
+            ->with('success', __('City created successfully.'));
     }
-
-    $city = $this->cityService->createCity($request->validated());
-
-    if ($request->wantsJson()) {
-        return response()->json($city, 201); 
-    }
-
-    return redirect()->route('cities.index')
-        ->with('success', __('City created successfully.'));
-}
 
     /**
      * Display the specified resource.
@@ -80,10 +81,17 @@ public function store(StoreCityRequest $request)
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(City $city)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(City $city, Request $request)
     {
         if (!auth()->user()->can('edit-city')) {
             abort(403, 'Unauthorized action.');
+        }
+
+        if ($request->wantsJson()) {
+            return response()->json($city);
         }
 
         $states = State::all();
@@ -98,9 +106,10 @@ public function store(StoreCityRequest $request)
         if (!auth()->user()->can('edit-city')) {
             abort(403, 'Unauthorized action.');
         }
-
-        $this->cityService->updateCity($city, $request->validated());
-
+        $updatedCity = $this->cityService->updateCity($city, $request->validated());
+        if ($request->wantsJson()) {
+            return response()->json($updatedCity);
+        }
         return redirect()->route('cities.index')
             ->with('success', __('City updated successfully.'));
     }
@@ -123,7 +132,7 @@ public function store(StoreCityRequest $request)
     public function getCitiesForState(State $state)
     {
 
-       if (!auth()->user()->can('view-city')) {
+        if (!auth()->user()->can('view-city')) {
             abort(403, 'Unauthorized action.');
         }
         return response()->json($state->cities()->orderBy('name')->get());
