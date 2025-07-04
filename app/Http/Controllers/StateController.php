@@ -82,6 +82,11 @@ public function store(StoreStateRequest $request)
         if (!auth()->user()->can('edit-state')) {
             abort(403);
         }
+        
+        if (request()->wantsJson()) {
+            return response()->json($state);
+        }
+        
         $countries = Country::all();
         return view('pages.states.partials.edit', compact('state', 'countries'));
     }
@@ -91,7 +96,13 @@ public function store(StoreStateRequest $request)
         if (!auth()->user()->can('edit-state')) {
             abort(403);
         }
-        $this->stateService->updateState($state, $request->validated());
+        
+        $updatedState = $this->stateService->updateState($state, $request->validated());
+        
+        if ($request->wantsJson()) {
+            return response()->json($updatedState);
+        }
+        
         return redirect()->route('states.index')->with('success', __('State updated successfully.'));
     }
 

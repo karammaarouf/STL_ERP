@@ -31,11 +31,12 @@ class CityService
      *
      * @param City $city
      * @param array $data
-     * @return bool
+     * @return City
      */
-    public function updateCity(City $city, array $data): bool
+    public function updateCity(City $city, array $data): City
     {
-        return $city->update($data);
+        $city->update($data);
+        return $city;
     }
 
     /**
