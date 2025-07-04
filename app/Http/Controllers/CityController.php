@@ -86,6 +86,10 @@ public function store(StoreCityRequest $request)
             abort(403, 'Unauthorized action.');
         }
 
+        if (request()->wantsJson()) {
+            return response()->json($city);
+        }
+
         $states = State::all();
         return view('pages.cities.partials.edit', compact('city', 'states'));
     }
@@ -99,7 +103,11 @@ public function store(StoreCityRequest $request)
             abort(403, 'Unauthorized action.');
         }
 
-        $this->cityService->updateCity($city, $request->validated());
+        $updatedCity = $this->cityService->updateCity($city, $request->validated());
+
+        if ($request->wantsJson()) {
+            return response()->json($updatedCity);
+        }
 
         return redirect()->route('cities.index')
             ->with('success', __('City updated successfully.'));

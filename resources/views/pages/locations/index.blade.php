@@ -182,6 +182,7 @@
     </div>
 @endsection
 @push('scripts')
+    <script src="{{ asset('assets/js/sweet-alert/app.js') }}"></script>
     <script>
         // تمرير الصلاحيات للتحقق من جهة العميل
         window.userPermissions = {
@@ -240,9 +241,21 @@
                     const editBtn = event.target.closest('.edit-icon-btn');
                     const countryId = item.dataset.id;
                     const countryName = item.querySelector('span').textContent.trim();
-                    openEditModal('edit-country', 'تعديل الدولة', editBtn.dataset.editUrl, {
-                        id: countryId,
-                        name: countryName
+                    
+                    // جلب بيانات الدولة من الخادم
+                    fetch(`{{ url('countries') }}/${countryId}/edit`, {
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(countryData => {
+                        openEditModal('edit-country', 'تعديل الدولة', `{{ url('countries') }}/${countryId}`, countryData);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching country data:', error);
+                        alert('حدث خطأ في جلب بيانات الدولة');
                     });
                     return;
                 }
@@ -266,7 +279,19 @@
 
                 if (event.target.closest('.edit-icon-btn')) {
                     event.preventDefault();
-                    window.location.href = event.target.closest('.edit-icon-btn').dataset.editUrl;
+                    event.stopPropagation();
+                    // فتح النافذة المنبثقة للتعديل
+                    const editBtn = event.target.closest('.edit-icon-btn');
+                    const cityId = item.dataset.id;
+                    const cityName = item.querySelector('span').textContent.trim();
+                    // الحصول على state_id من العنصر المحدد حاليًا
+                    const activeState = statesColumn.querySelector('.state-item.active');
+                    const stateId = activeState ? activeState.dataset.id : null;
+                    openEditModal('edit-city', 'تعديل المدينة', editBtn.dataset.editUrl, {
+                        id: cityId,
+                        name: cityName,
+                        state_id: stateId
+                    });
                     return;
                 }
 
@@ -281,7 +306,19 @@
 
                 if (event.target.closest('.edit-icon-btn')) {
                     event.preventDefault();
-                    window.location.href = event.target.closest('.edit-icon-btn').dataset.editUrl;
+                    event.stopPropagation();
+                    // فتح النافذة المنبثقة للتعديل
+                    const editBtn = event.target.closest('.edit-icon-btn');
+                    const stateId = item.dataset.id;
+                    const stateName = item.querySelector('span').textContent.trim();
+                    // الحصول على country_id من العنصر المحدد حاليًا
+                    const activeCountry = countriesColumn.querySelector('.country-item.active');
+                    const countryId = activeCountry ? activeCountry.dataset.id : null;
+                    openEditModal('edit-state', 'تعديل المحافظة', editBtn.dataset.editUrl, {
+                        id: stateId,
+                        name: stateName,
+                        country_id: countryId
+                    });
                     return;
                 }
 
@@ -297,9 +334,136 @@
                 fetchCities(item.dataset.id);
             });
 
+            // --- دالة فتح نافذة التعديل ---
+            function openEditModal(action, title, url, data) {
+                const modalTitle = locationModalElement.querySelector('.modal-title');
+                const modalBody = locationModalElement.querySelector('.modal-body');
+                modalTitle.textContent = title;
+
+                // بناء الفورم ديناميًا للتعديل
+                // إزالة /edit من URL للحصول على المسار الصحيح للتحديث
+                const updateUrl = url.replace('/edit', '');
+                let formContent = `<form id="locationForm" action="${updateUrl}" method="POST" novalidate>`;
+                formContent += `<input type="hidden" name="_method" value="PUT">`;
+                
+                if (action === 'edit-country') {
+                    formContent += `<div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="name">{{ __('Country Name') }}</label>
+                                                <input class="form-control" type="text" id="name" name="name" value="${data.name || ''}" required>
+                                                <div class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="iso_code">{{ __('Country Code (2 characters)') }}</label>
+                                                <div class="input-group">
+                                                    <input class="form-control" type="text" id="iso_code" name="iso_code" value="${data.iso_code || ''}" maxlength="2" required>
+                                                    <span class="input-group-text" id="flag-display" style="min-width: 60px; justify-content: center;">
+                                                        <img id="country-flag" src="" alt="" style="width: 32px; height: 24px; display: none; border-radius: 3px;">
+                                                        <span id="flag-placeholder" class="text-muted">🏳️</span>
+                                                    </span>
+                                                </div>
+                                                <div class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                } else if (action === 'edit-state') {
+                    formContent += `<div class="mb-3">
+                                      <label for="name" class="form-label">{{ __('State Name') }}</label>
+                                      <input type="text" class="form-control" name="name" id="name" value="${data.name}" required>
+                                      <input type="hidden" name="country_id" value="${data.country_id}">
+                                      <div class="invalid-feedback"></div>
+                                    </div>`;
+                } else if (action === 'edit-city') {
+                    formContent += `<div class="mb-3">
+                                      <label for="name" class="form-label">{{ __('City Name') }}</label>
+                                      <input type="text" class="form-control" name="name" id="name" value="${data.name}" required>
+                                      <input type="hidden" name="state_id" value="${data.state_id}">
+                                      <div class="invalid-feedback"></div>
+                                    </div>`;
+                }
+
+                // إضافة أزرار الحفظ والحذف
+                formContent += `<div class="modal-footer d-flex justify-content-between">
+                                  <div>
+                                    <form action="${updateUrl}" method="POST" style="display:inline;" class="d-inline delete-form">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="button" class="btn btn-danger sweet-5">{{ __('Delete') }}</button>
+                                    </form>
+                                  </div>
+                                  <div>
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                                    <button type="submit" class="btn btn-primary">{{ __('Update') }}</button>
+                                  </div>
+                                </div></form>`;
+
+                modalBody.innerHTML = formContent;
+
+                // إضافة وظيفة عرض أيقونة العلم للدول
+                if (action === 'edit-country') {
+                    const isoCodeInput = document.getElementById('iso_code');
+                    const countryFlag = document.getElementById('country-flag');
+                    const flagPlaceholder = document.getElementById('flag-placeholder');
+                    
+                    // Function to update flag display
+                    function updateFlag(isoCode) {
+                        if (isoCode && isoCode.length >= 2) {
+                            const flagUrl = `https://flagcdn.com/32x24/${isoCode.toLowerCase()}.png`;
+                            
+                            // Test if flag exists
+                            const img = new Image();
+                            img.onload = function() {
+                                countryFlag.src = flagUrl;
+                                countryFlag.alt = `${isoCode.toUpperCase()} Flag`;
+                                countryFlag.style.display = 'block';
+                                flagPlaceholder.style.display = 'none';
+                            };
+                            img.onerror = function() {
+                                countryFlag.style.display = 'none';
+                                flagPlaceholder.style.display = 'block';
+                            };
+                            img.src = flagUrl;
+                        } else {
+                            countryFlag.style.display = 'none';
+                            flagPlaceholder.style.display = 'block';
+                        }
+                    }
+                    
+                    // Update flag on input
+                    isoCodeInput.addEventListener('input', function() {
+                        const value = this.value.trim();
+                        updateFlag(value);
+                    });
+                    
+                    // Initial load
+                    updateFlag(isoCodeInput.value);
+                }
+
+                // التعامل مع إرسال الفورم
+                const form = modalBody.querySelector('#locationForm');
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    handleFormSubmission(form, action, true);
+                });
+
+                // تفعيل sweet-5 للحذف
+                SweetAlert_custom.init();
+
+                locationModal.show();
+            }
+
             // --- التعامل مع فتح الـ Modal ---
             locationModalElement.addEventListener('show.bs.modal', function(event) {
                 const button = event.relatedTarget;
+                
+                // التحقق من وجود button وdataset قبل الوصول إليها
+                if (!button || !button.dataset) {
+                    return; // إذا تم فتح الـ modal من خلال openEditModal، فلا نحتاج لهذا المعالج
+                }
+                
                 const action = button.dataset.action;
                 const title = button.dataset.title;
                 const url = button.dataset.url;
@@ -407,36 +571,64 @@
             });
 
             // --- دالة معالجة إرسال الفورم ---
-            function handleFormSubmission(form, action) {
+            function handleFormSubmission(form, action, isEdit = false) {
                 const submitButton = form.querySelector('button[type="submit"]');
                 const originalButtonText = submitButton.innerHTML;
                 submitButton.disabled = true;
                 submitButton.innerHTML =
-                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> {{ __('Saving...') }}`;
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ${isEdit ? '{{ __('Updating...') }}' : '{{ __('Saving...') }}'}`;
 
                 // إزالة رسائل الخطأ القديمة
                 form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
 
                 const formData = new FormData(form);
+                const jsonData = {};
+                for (let [key, value] of formData.entries()) {
+                    jsonData[key] = value;
+                }
+
+                // تحديد الطريقة الصحيحة للطلب
+                const httpMethod = isEdit ? 'PUT' : 'POST';
+                if (isEdit) {
+                    jsonData._method = 'PUT';
+                }
 
                 fetch(form.action, {
-                        method: 'POST',
+                        method: 'POST', // نستخدم POST دائماً مع _method للتوافق مع Laravel
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',
                             'Accept': 'application/json',
+                            'Content-Type': 'application/json',
                         },
-                        body: formData
+                        body: JSON.stringify(jsonData)
                     })
                     .then(response => {
                         if (!response.ok) {
-                            return response.json().then(err => {
-                                throw err;
+                            return response.text().then(text => {
+                                console.error('Server response:', text);
+                                try {
+                                    const err = JSON.parse(text);
+                                    throw err;
+                                } catch (e) {
+                                    throw new Error(`Server returned HTML instead of JSON. Status: ${response.status}`);
+                                }
                             });
                         }
-                        return response.json();
+                        return response.text().then(text => {
+                            try {
+                                return JSON.parse(text);
+                            } catch (e) {
+                                console.error('Invalid JSON response:', text);
+                                throw new Error('Server returned invalid JSON');
+                            }
+                        });
                     })
                     .then(data => {
-                        addNewItemToList(action, data);
+                        if (isEdit) {
+                            updateItemInList(action, data);
+                        } else {
+                            addNewItemToList(action, data);
+                        }
                         locationModal.hide();
                     })
                     .catch(error => {
@@ -490,6 +682,39 @@
                 newItemElement.innerHTML = itemContent; // لا يحتوي على زر التعديل الآن، يمكن إضافته
 
                 listContainer.appendChild(newItemElement);
+            }
+
+            // --- دالة تحديث العنصر في القائمة ---
+            function updateItemInList(action, item) {
+                let itemSelector, itemContent;
+
+                if (action === 'edit-country') {
+                    itemSelector = `.country-item[data-id="${item.id}"]`;
+                    itemContent = `<span> <i class="flag-icon flag-icon-${item.iso_code.toLowerCase()}"></i> ${item.name}</span>`;
+                    if (window.userPermissions.canEditCountries) {
+                        const editUrl = `{{ url('countries') }}/${item.id}/edit`;
+                        itemContent += `<button class="btn btn-sm btn-outline-secondary edit-icon-btn" data-edit-url="${editUrl}"><i class="fa fa-pencil"></i></button>`;
+                    }
+                } else if (action === 'edit-state') {
+                    itemSelector = `.state-item[data-id="${item.id}"]`;
+                    itemContent = `<span>${item.name}</span>`;
+                    if (window.userPermissions.canEditStates) {
+                        const editUrl = `{{ url('states') }}/${item.id}/edit`;
+                        itemContent += `<button class="btn btn-sm btn-outline-secondary edit-icon-btn" data-edit-url="${editUrl}"><i class="fa fa-pencil"></i></button>`;
+                    }
+                } else if (action === 'edit-city') {
+                    itemSelector = `.city-item[data-id="${item.id}"]`;
+                    itemContent = `<span>${item.name}</span>`;
+                    if (window.userPermissions.canEditCities) {
+                        const editUrl = `{{ url('cities') }}/${item.id}/edit`;
+                        itemContent += `<button class="btn btn-sm btn-outline-secondary edit-icon-btn" data-edit-url="${editUrl}"><i class="fa fa-pencil"></i></button>`;
+                    }
+                }
+
+                const itemElement = document.querySelector(itemSelector);
+                if (itemElement) {
+                    itemElement.innerHTML = itemContent;
+                }
             }
 
             // --- دوال جلب البيانات ---
