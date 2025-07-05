@@ -67,13 +67,26 @@ public function store(StoreCountryRequest $request)
         if (!auth()->user()->can('edit-country')) {
             abort(403);
         }
+        
+        if (request()->wantsJson()) {
+            return response()->json($country);
+        }
+        
         return view('pages.countries.partials.edit', compact('country'));
     }
 
     public function update(UpdateCountryRequest $request, Country $country)
     {
+        if (!auth()->user()->can('edit-country')) {
+            abort(403);
+        }
 
-        $this->countryService->updateCountry($country, $request->validated());
+        $updatedCountry = $this->countryService->updateCountry($country, $request->validated());
+        
+        if ($request->wantsJson()) {
+            return response()->json($updatedCountry);
+        }
+        
         return redirect()->route('countries.index')->with('success', __('Country updated successfully.'));
     }
 

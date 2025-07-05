@@ -371,8 +371,11 @@ var options = {
 };
 // Wrap chart initialization in DOM ready handler
 $(document).ready(function() {
-    var charttimeline = new ApexCharts(document.querySelector("#chart-timeline-dashbord"), options);
-    charttimeline.render();
+    // Check if element exists before creating chart
+    if (document.querySelector("#chart-timeline-dashbord")) {
+        var charttimeline = new ApexCharts(document.querySelector("#chart-timeline-dashbord"), options);
+        charttimeline.render();
+    }
     
     // second chart dashbord dafault
     var options17 = {
@@ -441,8 +444,10 @@ $(document).ready(function() {
             }
         }]
     };
-    var chart17 = new ApexCharts(document.querySelector("#chart-dashbord"), options17);
-    chart17.render();
+    if (document.querySelector("#chart-dashbord")) {
+        var chart17 = new ApexCharts(document.querySelector("#chart-dashbord"), options17);
+        chart17.render();
+    }
     // chart-4 dashbord
     var options21 = {
         series: [{
@@ -547,8 +552,10 @@ $(document).ready(function() {
       }
     };
 
-    var chart21 = new ApexCharts(document.querySelector("#chart-3dash"), options21);
-    chart21.render();
+    if (document.querySelector("#chart-3dash")) {
+        var chart21 = new ApexCharts(document.querySelector("#chart-3dash"), options21);
+        chart21.render();
+    }
     //column chart
     var options54 = {
         series: [{
@@ -622,8 +629,10 @@ $(document).ready(function() {
             show: false
         }
     };
-    var chart54 = new ApexCharts(document.querySelector("#chart-unique-2"), options54);
-    chart54.render();
+    if (document.querySelector("#chart-unique-2")) {
+        var chart54 = new ApexCharts(document.querySelector("#chart-unique-2"), options54);
+        chart54.render();
+    }
     //new column charts
     var options55 = {
         series: [{
@@ -707,5 +716,7 @@ $(document).ready(function() {
         },
         colors: [vihoAdminConfig.primary]
     };
-    var chart55 = new ApexCharts(document.querySelector("#user-activation-dash-2"), options55);
-    chart55.render();
+    if (document.querySelector("#user-activation-dash-2")) {
+        var chart55 = new ApexCharts(document.querySelector("#user-activation-dash-2"), options55);
+        chart55.render();
+    }
