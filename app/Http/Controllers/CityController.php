@@ -58,7 +58,7 @@ public function store(StoreCityRequest $request)
     $city = $this->cityService->createCity($request->validated());
 
     if ($request->wantsJson()) {
-        return response()->json($city, 201); 
+        return response()->json($city, 201);
     }
 
     return redirect()->route('cities.index')
@@ -123,8 +123,7 @@ public function store(StoreCityRequest $request)
         }
 
         $this->cityService->deleteCity($city);
-
-        return redirect()->route('cities.index')
+        return redirect()->back()
             ->with('success', __('City deleted successfully.'));
     }
 
