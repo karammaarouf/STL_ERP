@@ -594,7 +594,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <i class="fas fa-eye"></i>
                         </button>
                         ${permissions.edit ? `
-                            <button class="btn btn-sm btn-outline-warning edit-btn" title="{{ __('Edit') }}" data-id="${item.id}" data-type="${type}">
+                            <button class="btn btn-sm btn-outline-warning edit-btn" title="{{ __('Edit') }}" data-id="item.id}" data-type="${type}">
                                 <i class="fas fa-edit"></i>
                             </button>
                         ` : ''}
@@ -823,35 +823,18 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!button) return;
         
         button.addEventListener('click', function() {
-            handleAdd(key, this);
+            const routes = {
+                zone: `/warehouses/${this.dataset.warehouseId}/zones/create`,
+                section: `/zones/${this.dataset.zoneId}/sections/create`,
+                rack: `/sections/${this.dataset.sectionId}/racks/create`,
+                slot: `/racks/${this.dataset.rackId}/slots/create`
+            };
+            
+            if (routes[key]) {
+                window.location.href = routes[key];
+            }
         });
     });
-    
-    function handleAdd(type, button) {
-        const routes = {
-            zone: '/zones/create',
-            section: '/sections/create',
-            rack: '/racks/create',
-            slot: '/slots/create'
-        };
-        
-        if (routes[type]) {
-            // Get parent ID for context
-            let parentParam = '';
-            
-            if (type === 'zone' && button.dataset.warehouseId) {
-                parentParam = `?warehouse_id=${button.dataset.warehouseId}`;
-            } else if (type === 'section' && button.dataset.zoneId) {
-                parentParam = `?zone_id=${button.dataset.zoneId}`;
-            } else if (type === 'rack' && button.dataset.sectionId) {
-                parentParam = `?section_id=${button.dataset.sectionId}`;
-            } else if (type === 'slot' && button.dataset.rackId) {
-                parentParam = `?rack_id=${button.dataset.rackId}`;
-            }
-            
-            window.location.href = routes[type] + parentParam;
-        }
-    }
 
     // Add warehouse button handler
     const addWarehouseBtn = document.getElementById('add-warehouse-btn');
