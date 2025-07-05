@@ -88,7 +88,7 @@
                         <h6 class="mb-0 text-dark fw-semibold">
                             <i class="fas fa-layer-group me-2 text-success"></i>{{ __('Zones') }}
                         </h6>
-                        @can('create-zone')
+                        @can('create-warehouse-zone')
                         <button class="btn btn-outline-success btn-sm d-none" id="add-zone-btn" title="{{ __('Add Zone') }}">
                             <i class="fas fa-plus"></i>
                         </button>
@@ -118,7 +118,7 @@
                         <h6 class="mb-0 text-dark fw-semibold">
                             <i class="fas fa-th-large me-2 text-warning"></i>{{ __('Sections') }}
                         </h6>
-                        @can('create-section')
+                        @can('create-warehouse-section')
                         <button class="btn btn-outline-warning btn-sm d-none" id="add-section-btn" title="{{ __('Add Section') }}">
                             <i class="fas fa-plus"></i>
                         </button>
@@ -148,7 +148,7 @@
                         <h6 class="mb-0 text-dark fw-semibold">
                             <i class="fas fa-grip-vertical me-2 text-info"></i>{{ __('Racks') }}
                         </h6>
-                        @can('create-rack')
+                        @can('create-warehouse-rack')
                         <button class="btn btn-outline-info btn-sm d-none" id="add-rack-btn" title="{{ __('Add Rack') }}">
                             <i class="fas fa-plus"></i>
                         </button>
@@ -178,7 +178,7 @@
                         <h6 class="mb-0 text-dark fw-semibold">
                             <i class="fas fa-square me-2 text-danger"></i>{{ __('Slots') }}
                         </h6>
-                        @can('create-slot')
+                        @can('create-warehouse-slot')
                         <button class="btn btn-outline-danger btn-sm d-none" id="add-slot-btn" title="{{ __('Add Slot') }}">
                             <i class="fas fa-plus"></i>
                         </button>
